@@ -105,7 +105,6 @@ WORKDIR /opt/xAPP/uniimage
 # copy from previoud build stage
 RUN cp /root/uniimage/uniimage/build/uniimage .
 
-# CMD_ARGS --role server --server-ip <ip-address> --server-port <server-port> --web-port <web-port> --protocol tcp
 ENV ARGS="--role server --server-port 58989  --protocol tcp"
 ENV PORT=58080
 CMD "/opt/xAPP/uniimage/uniimage" --web-port ${PORT} ${ARGS}
