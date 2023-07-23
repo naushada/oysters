@@ -1,0 +1,37 @@
+<!--
+<clr-main-container>
+  <clr-header>
+      ...
+      <div class="header-nav" [clr-nav-level]="1">
+          ...
+      </div>
+      ...
+  </clr-header>
+  <div class="content-container">
+      <main class="content-area">
+          ...
+      </main>
+      <clr-vertical-nav [clr-nav-level]="2">
+          ...
+      </clr-vertical-nav>
+  </div>
+</clr-main-container>
+-->
+<clr-main-container>
+  <clr-header>
+      ...
+  </clr-header>
+  <nav class="subnav" [clr-nav-level]="1">
+      ...
+  </nav>
+  <div class="content-container">
+      <main class="content-area">
+          ...
+      </main>
+      <clr-vertical-nav [clr-nav-level]="2">
+          ...
+      </clr-vertical-nav>
+  </div>
+</clr-main-container>
+
+<router-outlet></router-outlet>
