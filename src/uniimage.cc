@@ -1535,8 +1535,24 @@ std::string noor::Service::handleOptionsMethod(Http& http) {
 std::string noor::Service::handleGetMethod(Http& http) {
 
     std::stringstream ss("");
-    if(!http.uri().compare(0, 17, "/api/v1/device/ui")) {
-        return(buildHttpRedirectResponse(http));
+    if(!http.uri().compare(0, 14, "/api/v1/db/get")) {
+        auto jobj = json::parse(http.body());
+        if(jobj["action"] != nullptr) {
+
+            if(jobj["action"].is_string() && !jobj["action"].get<std::string>().compare(0, 7, "account")) {
+                //Process Query string parameter
+                if(jobj["input"] != nullptr && jobj["input"].is_object() && jobj["input"]["accountinfo"] != nullptr && jobj["input"]["accountinfo"].is_object()) {
+                    //get account info for a given user.
+                }
+            } else if(jobj["action"].is_string() && !jobj["action"].get<std::string>().compare(0, 9, "grievance")) {
+                //Process Query string parameter
+                if(jobj["input"] != nullptr && jobj["input"].is_object() && jobj["input"]["grievanceinfo"] != nullptr && jobj["input"]["grievanceinfo"].is_object()) {
+                    //get grievances info.
+                }
+            } else {
+                std::cout << __TIMESTAMP__ << " line " << __LINE__ << " action not supported yet" << std::endl;
+            }
+        }
 
     } else if((!http.uri().compare(0, 7, "/webui/"))) {
         /* build the file name now */
@@ -1602,12 +1618,33 @@ std::string noor::Service::handleGetMethod(Http& http) {
 }
 
 std::string noor::Service::handlePostMethod(Http& http) {
+
     std::stringstream ss("");
     if(!http.uri().compare(0, 14, "/api/v1/db/get")) {
+        auto jobj = json::parse(http.body());
+
+        
         
         return(buildHttpRedirectResponse(http));
     } else if(!http.uri().compare(0, 14, "/api/v1/db/set")) {
-        return(buildHttpRedirectResponse(http));
+        auto jobj = json::parse(http.body());
+
+        if(jobj["action"] != nullptr) {
+
+            if(jobj["action"].is_string() && !jobj["action"].get<std::string>().compare(0, 7, "account")) {
+                //Process Query string parameter
+                if(jobj["input"] != nullptr && jobj["input"].is_object() && jobj["input"]["accountinfo"] != nullptr && jobj["input"]["accountinfo"].is_object()) {
+                    //Create Account for a given user.
+                }
+            } else if(jobj["action"].is_string() && !jobj["action"].get<std::string>().compare(0, 9, "grievance")) {
+                //Process Query string parameter
+                if(jobj["input"] != nullptr && jobj["input"].is_object() && jobj["input"]["grievanceinfo"] != nullptr && jobj["input"]["grievanceinfo"].is_object()) {
+                    //Create Grievance for a given user.
+                }
+            } else {
+                std::cout << __TIMESTAMP__ << " line " << __LINE__ << " action not supported yet" << std::endl;
+            }
+        }
     } else if(!http.uri().compare(0, 15, "/api/v1/db/exec")) {
         return(buildHttpRedirectResponse(http));
     } else {
