@@ -498,8 +498,13 @@ class noor::Service {
         std::string build_web_response(Http& http);
         std::string process_web_request(const std::string& req);
         std::string handleGetMethod(Http& http);
-        std::string buildHttpResponse(Http& http, const std::string& rsp_body);
+        std::string handlePostMethod(Http& http);
+        std::string handlePutMethod(Http& http);
+        std::string handleDeleteMethod(Http& http);
         std::string handleOptionsMethod(Http& http);
+        
+        std::string buildHttpResponse(Http& http, const std::string& rsp_body);
+        
         std::string buildHttpRedirectResponse(Http& http, std::string rsp_body = "");
         std::string buildHttpResponseOK(Http& http, std::string body, std::string contentType);
         std::string get_contentType(std::string ext);

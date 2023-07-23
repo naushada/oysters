@@ -497,12 +497,13 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                     case noor::ServiceType::Tcp_Web_Client_Connected_Service:
                     {
                         do {
-                            //Data is availabe for read. --- web_rx()
+
                             std::string request("");
                             auto svc = GetService(serviceType, Fd);
                             if(svc == nullptr) break;
 
-                            auto result = svc->tcp_rx(Fd, request);
+                            auto result = svc->web_rx(Fd, request);
+
                             if(!result) {
                                 //connection is closed
                                 std::cout << "line: " << __LINE__ << " closing the client connection for serviceType: " << serviceType << std::endl;
@@ -510,42 +511,10 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                 DeRegisterFromEPoll(Fd);
                                 break;
                             }
-                            
-                            Http http(request);
-                            if(!http.uri().compare(0, 19, "/api/v1/device/list")) {
-                                std::string body("");
-                                json jarray = json::array();
-                                for(const auto& ent: getResponseCache()) {
-                                    jarray.push_back(ent.second);
-                                }
-                                
-                                if(!jarray.empty()) {
-                                    std::stringstream ss;
-                                    json jobj = json::object();
-                                    jobj["devices"] = jarray;
-                                    body = jobj.dump();
-                                    //ss << "{\"devices\": " << jarray.dump() << "}";
-                                    
-                                    auto resp = svc->buildHttpResponse(http, body);
-                                    auto ret = svc->tcp_tx(Fd, resp);
-                                    std::cout << "line: " << __LINE__ << " sent to webui length: " << ret << " response: " << body << std::endl;
-                                }
-                                break;
-                            }
-
-                            if(!http.uri().compare(0, 14, "/api/v1/db/set") ||
-                               !http.uri().compare(0, 14, "/api/v1/db/get") ||
-                               !http.uri().compare(0, 15, "/api/v1/db/exec")) {
-                                svc->restC().uri(http.uri());
-                                std::string request;
-                                auto ret = svc->tcp_tx(svc->handle(), request);
-                                std::cout << "line: " << __LINE__ << " sending to device on channel: " << svc->handle() << " ret: " << ret << std::endl;
-                                break;
-                            }
 
                             auto rsp = svc->process_web_request(request);
                             auto ret = svc->tcp_tx(Fd, rsp);
-                            std::cout << "line: " << __LINE__ << " sent to webui length: " << ret << std::endl;
+
                         }while(0);
                     }
                     break;
@@ -1569,16 +1538,6 @@ std::string noor::Service::handleGetMethod(Http& http) {
     if(!http.uri().compare(0, 17, "/api/v1/device/ui")) {
         return(buildHttpRedirectResponse(http));
 
-    } else if(!http.uri().compare(0, 21, "/api/v1/shell/command")) {
-        //Sheel command to be executed
-        http.dump();
-        auto serialNumber = http.value("serialNo");
-        auto command = http.value("command");
-        auto IP = http.value("ipAddress");
-
-        if(!command.length()) {
-            return(buildHttpResponse(http, ""));
-        }
     } else if((!http.uri().compare(0, 7, "/webui/"))) {
         /* build the file name now */
         std::string fileName("");
@@ -1642,31 +1601,43 @@ std::string noor::Service::handleGetMethod(Http& http) {
     return(std::string());
 }
 
+std::string noor::Service::handlePostMethod(Http& http) {
+    std::stringstream ss("");
+    if(!http.uri().compare(0, 14, "/api/v1/db/get")) {
+        
+        return(buildHttpRedirectResponse(http));
+    } else if(!http.uri().compare(0, 14, "/api/v1/db/set")) {
+        return(buildHttpRedirectResponse(http));
+    } else if(!http.uri().compare(0, 15, "/api/v1/db/exec")) {
+        return(buildHttpRedirectResponse(http));
+    } else {
+
+    }
+
+    return(std::string());
+}
+
+std::string noor::Service::handlePutMethod(Http& http) {
+}
+
+std::string noor::Service::handleDeleteMethod(Http& http) {
+}
+
+
 std::string noor::Service::process_web_request(const std::string& req) {
     Http http(req);
+
     if(!http.method().compare("GET")) {
-        //handleGetRequest()
-        auto rsp_body = handleGetMethod(http);
-        return(rsp_body);
-        /*
-        if(rsp_body.length()) {
-            auto rsp = buildHttpResponse(http, rsp_body);
-            return(rsp);
-        }*/
-    }
-    else if(!http.method().compare("POST")) {
-        //handlePostMethod()
-    }
-    else if(!http.method().compare("PUT")) {
-        //handlePutMethod()
-    }
-    else if(!http.method().compare("OPTIONS")) {
+        return(handleGetMethod(http));
+    } else if(!http.method().compare("POST")) {
+        return(handlePostMethod(http));
+    } else if(!http.method().compare("PUT")) {
+        return(handlePutMethod(http));
+    } else if(!http.method().compare("OPTIONS")) {
         return(handleOptionsMethod(http));
-    }
-    else if(!http.method().compare("DELETE")) {
-        //handleDeleteMethod()
-    }
-    else {
+    } else if(!http.method().compare("DELETE")) {
+        return(handleDeleteMethod(http));
+    } else {
         //Error
     }
     return(std::string());

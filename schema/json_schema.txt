@@ -1,0 +1,60 @@
+schema:
+Request:
+URI: /api/v1/db/get
+{
+	"qs": {},
+	"dp": []
+}
+Response:
+{
+	"status": {
+		"result": "", //Success/Failure
+		"reason": "", //When Status=Failure then this will be present
+		
+	},
+	"last": {
+	}
+}
+
+Request:
+URI: /api/v1/db/set
+
+{
+	"qs": {},
+	"dp": {}
+}
+Response:
+{
+	"last": {
+	}
+}
+
+
+Request:
+URI: /api/v1/db/exec
+
+{
+	"qs": {},
+	"dp": {}
+}
+
+Response:
+{
+	"last": {
+	}
+}
+
+Request:
+URI: /api/v1/db/events
+
+{
+	"qs": {},
+	"dp": {}
+}
+
+Response:
+{
+	"last": {
+	}
+}
+
