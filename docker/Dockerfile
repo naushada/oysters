@@ -55,10 +55,10 @@ RUN mkdir build && cd build && cmake .. && make install
 RUN ldconfig
 WORKDIR /root
 
-RUN git clone https://github.com/naushada/oysters.git uniimage
-RUN cd uniimage/uniimage && \
+RUN git clone https://github.com/naushada/oysters.git
+RUN cd oysters && \
     mkdir build
-WORKDIR /root/uniimage/uniimage/build
+WORKDIR /root/oysters/build
 RUN cmake .. && make
 
 #node installation
@@ -72,20 +72,20 @@ RUN apt-get -y install curl && \
     npm install -g @angular/cli && \
     npm install @clr/core @clr/icons @clr/angular @clr/ui @webcomponents/webcomponentsjs --save
 
-WORKDIR /root
-RUN mkdir webclient && cd webclient
+WORKDIR /root/oysters/ui/src
+#RUN mkdir webclient && cd webclient
 
-WORKDIR /root/webclient
-RUN git  clone https://github.com/naushada/unimanage.git webui
-RUN cd webui
-WORKDIR /root/webclient/webui/src
+#WORKDIR /root/webclient
+#RUN git  clone https://github.com/naushada/oysters.git
+#RUN cd oysters/ui
+#WORKDIR /root/webclient/oysters/ui/src
 
 RUN npm install
 #RUN npm update
 
 ##### Compile the Angular webgui #################
 
-WORKDIR /root/webclient/webui
+# WORKDIR /root/webclient/webui
 
 RUN ng build --configuration production --aot --base-href /webui/
 
@@ -95,7 +95,7 @@ RUN cd /opt && \
     mkdir webgui && \
     cd webgui
 WORKDIR /opt/xAPP/webgui
-RUN cp -r /root/webclient/webui/dist/swi .
+RUN cp -r /root/webclient/oysters/ui/dist/oysters .
 
 WORKDIR /opt/xAPP
 RUN mkdir uniimage && \
@@ -103,7 +103,7 @@ RUN mkdir uniimage && \
 WORKDIR /opt/xAPP/uniimage
 
 # copy from previoud build stage
-RUN cp /root/uniimage/uniimage/build/uniimage .
+RUN cp /root/oysters/build/uniimage .
 
 ENV ARGS="--role server --server-port 58989  --protocol tcp"
 ENV PORT=58080
