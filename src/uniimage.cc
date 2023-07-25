@@ -59,6 +59,7 @@ std::int32_t noor::Uniimage::CreateServiceAndRegisterToEPoll(noor::ServiceType s
             case noor::ServiceType::Tls_Tcp_Restclient_Service_Async:
             case noor::ServiceType::Tls_Tcp_Client_Connected_Service:
             case noor::ServiceType::Tcp_Client_Connected_Service:
+            case noor::ServiceType::Tcp_Web_Client_Connected_Service:
             {
                 auto inst = std::make_unique<TcpClient>(IP, PORT, channel, isAsync);
                 m_services.insert(std::make_pair(serviceType, std::move(inst)));
@@ -355,7 +356,7 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             if(::fcntl(newFd, F_SETFL, flags | O_NONBLOCK) < 0) {
                                 std::cout << __TIMESTAMP__ << ": line: " << __LINE__ << " making socker non-blocking for fd: " << newFd << " failed" << std::endl;
                             }
-                            
+
                             m_services.insert(std::make_pair(noor::ServiceType::Tcp_Web_Client_Connected_Service , std::make_unique<TcpClient>(newFd, IP, PORT)));
                             RegisterToEPoll(noor::ServiceType::Tcp_Web_Client_Connected_Service, newFd);
                         }
@@ -1337,7 +1338,7 @@ std::int32_t noor::Service::tcp_rx(std::int32_t channel, std::string& out, std::
     in.fill(0);
 
     if(len == 2048) {
-        rc = ::recv(channel, in.data(), len, 0);
+        rc = ::recv(channel, in.data(), in.size(), 0);
         if(rc < 0) {
             return(rc);
         }
@@ -1722,7 +1723,7 @@ std::int32_t noor::Service::web_rx(std::int32_t channel, std::string& data) {
 
     len = tcp_peek(channel, req);
     if(!len) {
-        std::cout << "function: "<<__FUNCTION__ << " line: " << __LINE__ << " channel: " << channel << " be closed" << std::endl;
+        std::cout << "function: "<<__FUNCTION__ << " line: " << __LINE__ << " channel: " << channel << " being closed" << std::endl;
         return(len);
 
     } else if(len > 0) {
