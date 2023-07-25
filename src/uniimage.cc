@@ -349,6 +349,7 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                         if(newFd > 0) {
                             std::uint16_t PORT = ntohs(addr.sin_port);
                             std::string IP(inet_ntoa(addr.sin_addr));
+                            std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " new client connection from IP: " << IP << " PORT: " << PORT << std::endl;
                             //making socket non-blocking
                             auto flags = ::fcntl(newFd, F_GETFL);
                             if(::fcntl(newFd, F_SETFL, flags | O_NONBLOCK) < 0) {
@@ -436,8 +437,8 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             if(!result) {
                                 //TCP Connection is closed.
                                 std::cout << "line: " << __LINE__ << " closing the client connection " << std::endl;
-                                DeleteService(serviceType, Fd);
                                 DeRegisterFromEPoll(Fd);
+                                DeleteService(serviceType, Fd);
                                 break;
                             }
                             json jobj = json::parse(request);
@@ -469,8 +470,9 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             } else if(!len) {
                                 //connection is closed.
                                 std::cout << "line: " << __LINE__ << " closing the client connection for serviceType: " << serviceType << " len: " << len << std::endl;
-                                DeleteService(serviceType, Fd);
                                 DeRegisterFromEPoll(Fd);
+                                DeleteService(serviceType, Fd);
+                                
                                 break;
                             }
 
@@ -507,8 +509,9 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             if(!result) {
                                 //connection is closed
                                 std::cout << "line: " << __LINE__ << " closing the client connection for serviceType: " << serviceType << std::endl;
-                                DeleteService(serviceType, Fd);
                                 DeRegisterFromEPoll(Fd);
+                                DeleteService(serviceType, Fd);
+                                
                                 break;
                             }
 
