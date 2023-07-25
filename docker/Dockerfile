@@ -72,7 +72,7 @@ RUN apt-get -y install curl && \
     npm install -g @angular/cli && \
     npm install @clr/core @clr/icons @clr/angular @clr/ui @webcomponents/webcomponentsjs --save
 
-WORKDIR /root/oysters/ui/src
+
 #RUN mkdir webclient && cd webclient
 
 #WORKDIR /root/webclient
@@ -80,13 +80,15 @@ WORKDIR /root/oysters/ui/src
 #RUN cd oysters/ui
 #WORKDIR /root/webclient/oysters/ui/src
 
-RUN npm install
+# RUN npm install
 #RUN npm update
 
 ##### Compile the Angular webgui #################
 
 # WORKDIR /root/webclient/webui
 
+WORKDIR /root/oysters/ui/Oysters
+RUN npm install
 RUN ng build --configuration production --aot --base-href /webui/
 
 RUN cd /opt && \
@@ -95,7 +97,7 @@ RUN cd /opt && \
     mkdir webgui && \
     cd webgui
 WORKDIR /opt/xAPP/webgui
-RUN cp -r /root/webclient/oysters/ui/dist/oysters .
+RUN cp -r /root/oysters/ui/Oysters/dist .
 
 WORKDIR /opt/xAPP
 RUN mkdir uniimage && \
