@@ -97,7 +97,7 @@ RUN cd /opt && \
     mkdir webgui && \
     cd webgui
 WORKDIR /opt/xAPP/webgui
-RUN cp -r /root/oysters/ui/Oysters/dist .
+RUN cp -r /root/oysters/ui/Oysters/dist/oysters .
 
 WORKDIR /opt/xAPP
 RUN mkdir uniimage && \
