@@ -517,7 +517,11 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             }
 
                             auto rsp = svc->process_web_request(request);
-                            auto ret = svc->tcp_tx(Fd, rsp);
+                            if(rsp.length()) {
+                                auto ret = svc->tcp_tx(Fd, rsp);
+                                std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " the response: " << std::endl << rsp << std::endl;
+                            }
+                            
 
                         }while(0);
                     }
