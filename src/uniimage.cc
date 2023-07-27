@@ -518,9 +518,11 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                     break;
                                 }
 
+                                #if 0
                                 //Do a TLS handshake now
                                 svc->tls().init(svc->handle());
                                 svc->tls().client();
+                                #endif
 
                                 //Prepare Request to get geolocation 
                                 std::stringstream ss;
@@ -535,13 +537,13 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                    << "\r\n"
                                    << "Accept: application/json, text/html"
                                    << "\r\n";
-                                   if(svc->tls().write(ss.str()) > 0) {
+                                   if(svc->tcp_tx(svc->handle(), ss.str()) > 0) {
                                         //sent successfully.
                                         std::string response;
-                                        if(svc->tls().read(response) > 0) {
+                                        if(svc->tcp_rx(svc->handle(), response) > 0) {
                                             Http http(response);
                                             std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " GEOLOCATION: " << response << std::endl;
-
+                                            
                                             json jobj = json::parse(http.body());
                                             if(jobj["status"] != nullptr) {
                                                 //successful response.
@@ -1293,7 +1295,6 @@ int main(std::int32_t argc, char *argv[]) {
  * @return std::int32_t 
  */
 std::int32_t noor::Service::tcp_client(const std::string& IP, std::uint16_t PORT, std::int32_t &fd, bool isAsync) {
-    //std::unique_ptr<struct addrinfo, decltype(freeaddrinfo)> result = std::unique_ptr<struct addrinfo, decltype(freeaddrinfo)>(IP.data(), nullptr, nullptr, &result);
     struct addrinfo *result;
     /* Set up the address we're going to bind to. */
     bzero(&m_addr, sizeof(m_addr));
