@@ -1849,14 +1849,14 @@ std::int32_t noor::Service::tcp_tx(std::int32_t channel, const std::string& req)
     std::int32_t offset = 0;
     std::int32_t req_len = req.length();
     std::int32_t len = -1;
-    auto payload_len = htonl(req_len);
-    std::stringstream data("");
-    data.write (reinterpret_cast <char *>(&payload_len), sizeof(std::int32_t));
-    data << req;
+    //auto payload_len = htonl(req_len);
+    //std::stringstream data("");
+    //data.write (reinterpret_cast <char *>(&payload_len), sizeof(std::int32_t));
+    //data << req;
 
-    req_len = data.str().length();
+    //req_len = req.length();
     do {
-        len = send(channel, data.str().data() + offset, req_len - offset, 0);
+        len = send(channel, (req.data() + offset), req_len - offset, 0);
         if(len < 0) {
             offset = len;
             break;
@@ -1865,7 +1865,7 @@ std::int32_t noor::Service::tcp_tx(std::int32_t channel, const std::string& req)
     } while(offset != req_len);
 
     if(offset == req_len) {
-        std::cout <<"line: "<< __LINE__ << " Request sent to TCP Client successfully: req_len:" << req_len << std::endl;
+        std::cout <<"line: "<< __LINE__ << " Sent to TCP Client successfully: len:" << req_len << std::endl;
     }
     return(offset);
 }
