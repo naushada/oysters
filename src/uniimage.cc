@@ -539,10 +539,12 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                         //sent successfully.
                                         std::string response;
                                         if(svc->tls().read(response) > 0) {
-                                            json jobj = json::parse(response);
+                                            Http http(response);
+                                            std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " GEOLOCATION: " << response << std::endl;
+
+                                            json jobj = json::parse(http.body());
                                             if(jobj["status"] != nullptr) {
                                                 //successful response.
-                                                std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " GEOLOCATION: " << response << std::endl;
                                                 std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " latitude: " << jobj["latitude"] << "longitude: " 
                                                           <<jobj["longitude"] << std::endl;
                                                 svc->tcp_tx(Fd, response);
