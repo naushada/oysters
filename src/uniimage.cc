@@ -351,12 +351,13 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             std::uint16_t PORT = ntohs(addr.sin_port);
                             std::string IP(inet_ntoa(addr.sin_addr));
                             std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " new client connection from IP: " << IP << " PORT: " << PORT << std::endl;
+                            #if 0
                             //making socket non-blocking
                             auto flags = ::fcntl(newFd, F_GETFL);
                             if(::fcntl(newFd, F_SETFL, flags | O_NONBLOCK) < 0) {
                                 std::cout << __TIMESTAMP__ << ": line: " << __LINE__ << " making socker non-blocking for fd: " << newFd << " failed" << std::endl;
                             }
-
+                            #endif
                             m_services.insert(std::make_pair(noor::ServiceType::Tcp_Web_Client_Connected_Service , std::make_unique<TcpClient>(newFd, IP, PORT)));
                             RegisterToEPoll(noor::ServiceType::Tcp_Web_Client_Connected_Service, newFd);
                         }
@@ -1244,7 +1245,7 @@ int main(std::int32_t argc, char *argv[]) {
             std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " protocol is not supported " << std::endl;
             exit(0);
         }
-
+        std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " listening on PORT:" << config["web-port"] << std::endl;
         inst.CreateServiceAndRegisterToEPoll(noor::ServiceType::Tcp_Web_Server_Service, config["server-ip"], std::stoi(config["web-port"]));
     }
 
@@ -1389,7 +1390,7 @@ std::int32_t noor::Service::tcp_peek(std::int32_t channel, std::string& out, std
 
     if(len == 2048) {
         rc = ::recv(channel, in.data(), len, MSG_PEEK);
-        if(rc < 0) {
+        if(rc <= 0) {
             return(rc);
         }
         out.assign(in.data(), rc);
