@@ -1293,8 +1293,8 @@ int main(std::int32_t argc, char *argv[]) {
  * @return std::int32_t 
  */
 std::int32_t noor::Service::tcp_client(const std::string& IP, std::uint16_t PORT, std::int32_t &fd, bool isAsync) {
-    struct addrinfo  *result;
-
+    //std::unique_ptr<struct addrinfo, decltype(freeaddrinfo)> result = std::unique_ptr<struct addrinfo, decltype(freeaddrinfo)>(IP.data(), nullptr, nullptr, &result);
+    struct addrinfo *result;
     /* Set up the address we're going to bind to. */
     bzero(&m_addr, sizeof(m_addr));
     m_addr.sin_family = AF_INET;
@@ -1311,6 +1311,7 @@ std::int32_t noor::Service::tcp_client(const std::string& IP, std::uint16_t PORT
         m_addr.sin_addr = ((struct sockaddr_in *)result->ai_addr)->sin_addr;
     }
 
+    freeaddrinfo(result);
     auto len = sizeof(m_addr);
     std::int32_t channel = -1;
     //learn them for future
