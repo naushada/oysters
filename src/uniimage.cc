@@ -351,13 +351,8 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             std::uint16_t PORT = ntohs(addr.sin_port);
                             std::string IP(inet_ntoa(addr.sin_addr));
                             std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " new client connection from IP: " << IP << " PORT: " << PORT << std::endl;
-                            #if 0
-                            //making socket non-blocking
-                            auto flags = ::fcntl(newFd, F_GETFL);
-                            if(::fcntl(newFd, F_SETFL, flags | O_NONBLOCK) < 0) {
-                                std::cout << __TIMESTAMP__ << ": line: " << __LINE__ << " making socker non-blocking for fd: " << newFd << " failed" << std::endl;
-                            }
-                            #endif
+                            /* tcp_peek on non-blocking socket will return zero, which is causing the socket tobe closed.
+                             */
                             m_services.insert(std::make_pair(noor::ServiceType::Tcp_Web_Client_Connected_Service , std::make_unique<TcpClient>(newFd, IP, PORT)));
                             RegisterToEPoll(noor::ServiceType::Tcp_Web_Client_Connected_Service, newFd);
                         }
@@ -376,12 +371,6 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             std::uint16_t PORT = ntohs(addr.sin_port);
                             std::string IP(inet_ntoa(addr.sin_addr));
                             std::cout<< "line: " << __LINE__ << " new client from device IP: " << IP <<" PORT: " << PORT << " FD: " << newFd << std::endl;
-                            //making socket non-blocking
-                            auto flags = ::fcntl(newFd, F_GETFL);
-                            if(::fcntl(newFd, F_SETFL, flags | O_NONBLOCK) < 0) {
-                                std::cout << __TIMESTAMP__ << ": line: " << __LINE__ << " making socker non-blocking for fd: " << newFd << " failed" << std::endl;
-                            }
-
                             m_services.insert(std::make_pair(noor::ServiceType::Tcp_Client_Connected_Service , std::make_unique<TcpClient>(newFd, IP, PORT)));
                             RegisterToEPoll(noor::ServiceType::Tcp_Client_Connected_Service, newFd);
                         }
@@ -520,19 +509,8 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             auto rsp = svc->process_web_request(request);
                             if(rsp.length()) {
                                 auto ret = svc->tcp_tx(Fd, rsp);
-                                #if 0
-                                //std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " the response: " << std::endl << rsp << std::endl;
-                                Http http(request);
-                                if(!http.value("Connection").compare(0, 5, "Close") || !http.value("Connection").compare(0, 5, "close")) {
-                                    std::cout << "line: " << __LINE__ << " Connection: " << http.value("Connection") <<" being closed for serviceType: "
-                                    << serviceType << std::endl;
-                                    DeRegisterFromEPoll(Fd);
-                                    DeleteService(serviceType, Fd);
-                                }
-                                #endif
+                                break;
                             }
-                            
-
                         }while(0);
                     }
                     break;
