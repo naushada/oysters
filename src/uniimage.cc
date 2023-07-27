@@ -1293,12 +1293,24 @@ int main(std::int32_t argc, char *argv[]) {
  * @return std::int32_t 
  */
 std::int32_t noor::Service::tcp_client(const std::string& IP, std::uint16_t PORT, std::int32_t &fd, bool isAsync) {
+    struct addrinfo  *result;
+
     /* Set up the address we're going to bind to. */
     bzero(&m_addr, sizeof(m_addr));
     m_addr.sin_family = AF_INET;
     m_addr.sin_port = htons(PORT);
-    m_addr.sin_addr.s_addr = inet_addr(IP.c_str());
+    //m_addr.sin_addr.s_addr = inet_addr(IP.c_str());
     memset(m_addr.sin_zero, 0, sizeof(m_addr.sin_zero));
+
+    auto s = getaddrinfo(IP.data(), nullptr, nullptr, &result);
+    if (s != 0) {
+        //Failed IP is an IP Address not Domain Name
+        m_addr.sin_addr.s_addr = inet_addr(IP.c_str());
+    } else {
+        //Success
+        m_addr.sin_addr = ((struct sockaddr_in *)result->ai_addr)->sin_addr;
+    }
+
     auto len = sizeof(m_addr);
     std::int32_t channel = -1;
     //learn them for future
