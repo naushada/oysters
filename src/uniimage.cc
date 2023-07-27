@@ -519,6 +519,7 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             auto rsp = svc->process_web_request(request);
                             if(rsp.length()) {
                                 auto ret = svc->tcp_tx(Fd, rsp);
+                                #if 0
                                 //std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " the response: " << std::endl << rsp << std::endl;
                                 Http http(request);
                                 if(!http.value("Connection").compare(0, 5, "Close") || !http.value("Connection").compare(0, 5, "close")) {
@@ -527,6 +528,7 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                     DeRegisterFromEPoll(Fd);
                                     DeleteService(serviceType, Fd);
                                 }
+                                #endif
                             }
                             
 
