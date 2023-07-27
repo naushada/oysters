@@ -60,6 +60,8 @@ std::int32_t noor::Uniimage::CreateServiceAndRegisterToEPoll(noor::ServiceType s
             case noor::ServiceType::Tls_Tcp_Client_Connected_Service:
             case noor::ServiceType::Tcp_Client_Connected_Service:
             case noor::ServiceType::Tcp_Web_Client_Connected_Service:
+            case noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync:
+            case noor::ServiceType::Tls_Tcp_Geolocation_Service_Async:
             {
                 auto inst = std::make_unique<TcpClient>(IP, PORT, channel, isAsync);
                 m_services.insert(std::make_pair(serviceType, std::move(inst)));
@@ -506,6 +508,50 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                 break;
                             }
 
+                            //for Geolocation.
+                            Http http(request);
+                            if(!http.uri().compare(0, 19, "/api/v1/geolocation")) {
+                                CreateServiceAndRegisterToEPoll(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, "api.ipstack.com", 443);
+                                auto svc = GetService(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync);
+                                if(svc == nullptr) {
+                                    //build an error response
+                                    break;
+                                }
+
+                                //Do a TLS handshake now
+                                svc->tls().init(svc->handle());
+                                svc->tls().client();
+
+                                //Prepare Request to get geolocation 
+                                std::stringstream ss;
+                                ss << "HTTP/1.1 GET /" << http.value("X-Forwarded-For")
+                                   << "?access_key=ae888b6de490466546b0dd51acac31ab"
+                                   << "\r\n"
+                                   << "Host: api.ipstack.com:443"
+                                   <<"\r\n"
+                                   << "Connection: close"
+                                   << "\r\n"
+                                   << "Content-Length: 0"
+                                   << "\r\n"
+                                   << "Accept: application/json, text/html"
+                                   << "\r\n";
+                                   if(svc->tls().write(ss.str()) > 0) {
+                                        //sent successfully.
+                                        std::string response;
+                                        if(svc->tls().read(response) > 0) {
+                                            json jobj = json::parse(response);
+                                            if(jobj["status"] != nullptr) {
+                                                //successful response.
+                                                std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " GEOLOCATION: " << response << std::endl;
+                                                std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " latitude: " << jobj["latitude"] << "longitude: " 
+                                                          <<jobj["longitude"] << std::endl;
+                                                svc->tcp_tx(Fd, response);
+                                            }
+
+                                            break;
+                                        }
+                                   }
+                            }
                             auto rsp = svc->process_web_request(request);
                             if(rsp.length()) {
                                 auto ret = svc->tcp_tx(Fd, rsp);

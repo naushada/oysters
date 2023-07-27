@@ -82,6 +82,9 @@ namespace noor {
         Tls_Tcp_Restclient_Service_Async  = 50,
         Tls_Tcp_Restclient_Service_Sync,
 
+        Tls_Tcp_Geolocation_Service_Async  = 60,
+        Tls_Tcp_Geolocation_Service_Sync,
+
     };
 }
 
@@ -399,7 +402,7 @@ class noor::Tls {
                 rc = SSL_write(m_ssl.get(), out.data() + offset, len - offset);
 
                 if(rc < 0) {
-                    break;
+                    return(rc);
                 }
 
                 offset += rc;
