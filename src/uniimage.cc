@@ -536,7 +536,8 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                    << "Content-Length: 0"
                                    << "\r\n"
                                    << "Accept: application/json, text/html"
-                                   << "\r\n";
+                                   << "\r\n\r\n";
+
                                    if(svc->tcp_tx(svc->handle(), ss.str()) > 0) {
                                         //sent successfully.
                                         std::string response;
@@ -550,6 +551,8 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                                 std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " latitude: " << jobj["latitude"] << "longitude: " 
                                                           <<jobj["longitude"] << std::endl;
                                                 svc->tcp_tx(Fd, response);
+                                                DeRegisterFromEPoll(svc->handle());
+                                                DeleteService(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, svc->handle());
                                             }
 
                                             break;

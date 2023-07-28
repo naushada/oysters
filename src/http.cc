@@ -169,7 +169,6 @@ std::string noor::Http::get_header(const std::string& in)
 
 std::string noor::Http::get_body(const std::string& in)
 {
-  //auto header = get_header(in);
   std::stringstream result;
 
   auto cl = value("Content-Length");
@@ -179,10 +178,10 @@ std::string noor::Http::get_body(const std::string& in)
       //Got the chunked Response the format is <len in hex>\r\n<payload>\r\n<0>\r\n end of response
       std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " transfer-encoding: " << value("transfer-encoding") << std::endl;
       std::stringstream ss;
-      auto payload = in.substr(get_header(in).length());
+      auto payload = in.substr(header().length());
       ss << payload;
 
-      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " m_header: " << get_header(in) << std::endl;
+      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " m_header: " << header() << std::endl;
       std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " ss: " << ss.str() << std::endl;
 
       while(!ss.eof()) {
@@ -200,7 +199,7 @@ std::string noor::Http::get_body(const std::string& in)
     return(std::string());
   }
 
-  auto body = in.substr(m_header.length(), in.length() - m_header.length());
+  auto body = in.substr(header().length());
   return(body);
 }
 
