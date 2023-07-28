@@ -526,17 +526,21 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
 
                                 //Prepare Request to get geolocation 
                                 std::stringstream ss;
-                                ss << "HTTP/1.1 GET /" << http.value("X-Forwarded-For")
+                                ss << "GET /" << "45.252.181.52"//http.value("X-Forwarded-For")
                                    << "?access_key=ae888b6de490466546b0dd51acac31ab"
-                                   << "\r\n"
-                                   << "Host: api.ipstack.com:443"
+                                   << " HTTP/1.1\r\n"
+                                   << "Host: api.ipstack.com"
                                    <<"\r\n"
-                                   << "Connection: close"
+                                   << "Connection: keep-alive"
                                    << "\r\n"
                                    << "Content-Length: 0"
                                    << "\r\n"
                                    << "Accept: application/json, text/html"
-                                   << "\r\n\r\n";
+                                   << "\r\n"
+                                   << "User-Agent: Embedded Client"
+                                   << "\r\n"
+                                   << "\r\n";
+                                   std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " REQUEST: " << ss.str() << std::endl;
 
                                    if(svc->tcp_tx(svc->handle(), ss.str()) > 0) {
                                         //sent successfully.
@@ -544,16 +548,20 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                         if(svc->tcp_rx(svc->handle(), response) > 0) {
                                             Http http(response);
                                             std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " GEOLOCATION: " << response << std::endl;
-                                            
-                                            json jobj = json::parse(http.body());
-                                            if(jobj["status"] != nullptr) {
-                                                //successful response.
-                                                std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " latitude: " << jobj["latitude"] << "longitude: " 
-                                                          <<jobj["longitude"] << std::endl;
+                                            if(!http.status_code().compare(0, 3, "200")) {
+                                                json jobj = json::parse(http.body());
+                                                if(jobj["status"] == nullptr) {
+                                                    //successful response.
+                                                    std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " latitude: " << jobj["latitude"] << "longitude: " 
+                                                              <<jobj["longitude"] << std::endl;
+                                                    auto content = svc->buildHttpResponseOK(http, http.body(), "application/json");
+                                                    svc->tcp_tx(Fd, content);
+                                                }
+                                            } else {
                                                 svc->tcp_tx(Fd, response);
-                                                DeRegisterFromEPoll(svc->handle());
-                                                DeleteService(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, svc->handle());
                                             }
+                                            DeRegisterFromEPoll(svc->handle());
+                                            DeleteService(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, svc->handle());
 
                                             break;
                                         }

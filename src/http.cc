@@ -127,7 +127,7 @@ void noor::Http::parse_header(const std::string& in)
    */
   std::getline(input, line_str);
   
-  auto offset = input.str().find_last_of("\r\n\r\n", input.str().length(), 4);
+  auto offset = input.str().find("\r\n\r\n", 0, 4);
   if(std::string::npos != offset) {
     //HTTP Header part
     auto header = input.str().substr(0, offset);
@@ -160,7 +160,7 @@ std::string noor::Http::get_header(const std::string& in)
   std::string header("");
   auto offset = in.find("\r\n\r\n", 0, 4);
   if(std::string::npos != offset) {
-    header = in.substr(0, offset);
+    header = in.substr(0, offset + 4);
     return(header);
   }
   
@@ -176,13 +176,13 @@ std::string noor::Http::get_body(const std::string& in)
 
     if(!value("transfer-encoding").compare(0, 7, "chunked")) {
       //Got the chunked Response the format is <len in hex>\r\n<payload>\r\n<0>\r\n end of response
-      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " transfer-encoding: " << value("transfer-encoding") << std::endl;
+      //std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " transfer-encoding: " << value("transfer-encoding") << std::endl;
       std::stringstream ss;
       auto payload = in.substr(header().length());
       ss << payload;
 
-      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " m_header: " << header() << std::endl;
-      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " ss: " << ss.str() << std::endl;
+      //std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " m_header: " << header() << std::endl;
+      //std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " ss: " << ss.str() << std::endl;
 
       while(!ss.eof()) {
         std::string len_str("");
@@ -193,7 +193,7 @@ std::string noor::Http::get_body(const std::string& in)
           result << payload_str;
         }
       };
-      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " result: " << result.str() << std::endl;
+      //std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " result: " << result.str() << std::endl;
       return(result.str());
     }
     return(std::string());
