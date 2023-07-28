@@ -528,11 +528,12 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                                       <<jobj["longitude"] << std::endl;
                                             auto content = svc->buildHttpResponseOK(http, http.body(), "application/json");
                                             svc->tcp_tx(Fd, content);
-                                        } else {
-                                            svc->tcp_tx(Fd, response);
+                                            DeRegisterFromEPoll(svc->handle());
+                                            DeleteService(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, svc->handle());
+                                            break;
                                         }
                                     }
-
+                                    svc->tcp_tx(Fd, response);
                                 }
                                 DeRegisterFromEPoll(svc->handle());
                                 DeleteService(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, svc->handle());
