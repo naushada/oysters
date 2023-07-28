@@ -504,7 +504,6 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                 std::cout << "line: " << __LINE__ << " closing the client connection for serviceType: " << serviceType << std::endl;
                                 DeRegisterFromEPoll(Fd);
                                 DeleteService(serviceType, Fd);
-                                
                                 break;
                             }
 
@@ -517,56 +516,29 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                     //build an error response
                                     break;
                                 }
-
-                                #if 0
-                                //Do a TLS handshake now
-                                svc->tls().init(svc->handle());
-                                svc->tls().client();
-                                #endif
-
-                                //Prepare Request to get geolocation 
-                                std::stringstream ss;
-                                ss << "GET /" << http.value("X-Forwarded-For")
-                                   << "?access_key=ae888b6de490466546b0dd51acac31ab"
-                                   << " HTTP/1.1\r\n"
-                                   << "Host: api.ipstack.com"
-                                   <<"\r\n"
-                                   << "Connection: keep-alive"
-                                   << "\r\n"
-                                   << "Content-Length: 0"
-                                   << "\r\n"
-                                   << "Accept: application/json, text/html"
-                                   << "\r\n"
-                                   << "User-Agent: Embedded Client"
-                                   << "\r\n"
-                                   << "\r\n";
-                                   std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " REQUEST: " << ss.str() << std::endl;
-
-                                   if(svc->tcp_tx(svc->handle(), ss.str()) > 0) {
-                                        //sent successfully.
-                                        std::string response;
-                                        if(svc->tcp_rx(svc->handle(), response) > 0) {
-                                            Http http(response);
-                                            std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " GEOLOCATION: " << response << std::endl;
-                                            if(!http.status_code().compare(0, 3, "200")) {
-                                                json jobj = json::parse(http.body());
-                                                if(jobj["status"] == nullptr) {
-                                                    //successful response.
-                                                    std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " latitude: " << jobj["latitude"] << "longitude: " 
-                                                              <<jobj["longitude"] << std::endl;
-                                                    auto content = svc->buildHttpResponseOK(http, http.body(), "application/json");
-                                                    svc->tcp_tx(Fd, content);
-                                                }
-                                            } else {
-                                                svc->tcp_tx(Fd, response);
-                                            }
-                                            DeRegisterFromEPoll(svc->handle());
-                                            DeleteService(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, svc->handle());
-
-                                            break;
+                                auto response = svc->get_geolocation(http.value("X-Forwarded-For"), get_config()["geolocation-access-token"]);
+                                //std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " response: " << response << std::endl;
+                                {
+                                    Http http(response);
+                                    if(response.length() && !http.status_code().compare(0, 3, "200")) {
+                                        //200 OK success Response
+                                        json jobj = json::parse(http.body());
+                                        if(jobj["status"] == nullptr) {
+                                            std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " latitude: " << jobj["latitude"] << " longitude: " 
+                                                      <<jobj["longitude"] << std::endl;
+                                            auto content = svc->buildHttpResponseOK(http, http.body(), "application/json");
+                                            svc->tcp_tx(Fd, content);
+                                        } else {
+                                            svc->tcp_tx(Fd, response);
                                         }
-                                   }
+                                    }
+
+                                }
+                                DeRegisterFromEPoll(svc->handle());
+                                DeleteService(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, svc->handle());
+                                break;
                             }
+
                             auto rsp = svc->process_web_request(request);
                             if(rsp.length()) {
                                 auto ret = svc->tcp_tx(Fd, rsp);
@@ -1130,7 +1102,10 @@ std::vector<struct option> options = {
     {"machine",                   required_argument, 0, 'm'},
     {"config-json",               required_argument, 0, 'c'},
     {"userid",                    required_argument, 0, 'u'},
-    {"password",                  required_argument, 0, 'd'}
+    {"password",                  required_argument, 0, 'd'},
+    {"geolocation-access-token",  required_argument, 0, 'g'},
+    {"emailid",                   required_argument, 0, 'l'},
+    {"email-password",            required_argument, 0, 'q'}
 };
 
 /*
@@ -1219,6 +1194,22 @@ int main(std::int32_t argc, char *argv[]) {
                 config.emplace(std::make_pair("password", optarg));
             }
             break;
+            case 'g':
+            {
+                config.emplace(std::make_pair("geolocation-access-token", optarg));
+            }
+            break;
+            case 'l':
+            {
+                config.emplace(std::make_pair("emailid", optarg));
+            }
+            break;
+            case 'q':
+            {
+                config.emplace(std::make_pair("email-password", optarg));
+            }
+            break;
+
             default:
             {
                 std::cout << "--role <client|server> " << std::endl
@@ -1232,7 +1223,10 @@ int main(std::int32_t argc, char *argv[]) {
                           << "--timeout     <value in ms> " << std::endl
                           << "--machine     <host|> " << std::endl
                           << "--userid      <Rest Client User ID> " << std::endl
-                          << "--password    <Rest Client Password> " << std::endl;
+                          << "--password    <Rest Client Password> " << std::endl
+                          << "--geolocation-access-token <access-token for getting geo location>" << std::endl
+                          << "--emailid <email for login to smtp server>" << std::endl
+                          << "--email-password < email password forlogin to smtp server>" << std::endl;
                           return(-1);
             }
         }
@@ -1295,6 +1289,42 @@ int main(std::int32_t argc, char *argv[]) {
     }
     // timeout is in milli seconds
     inst.start(timeout);
+}
+
+std::string noor::Service::get_geolocation(const std::string& IP, const std::string& access_token) {
+    #if 0
+    //Do a TLS handshake now
+    svc->tls().init(svc->handle());
+    svc->tls().client();
+    #endif
+
+    //Prepare Request to get geolocation 
+    std::stringstream ss;
+    ss << "GET /" << IP
+       << "?access_key="
+       << access_token
+       << " HTTP/1.1\r\n"
+       << "Host: api.ipstack.com"
+       <<"\r\n"
+       << "Connection: keep-alive"
+       << "\r\n"
+       << "Content-Length: 0"
+       << "\r\n"
+       << "Accept: application/json, text/html"
+       << "\r\n"
+       << "User-Agent: Embedded Client"
+       << "\r\n"
+       << "\r\n";
+    //std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " REQUEST: " << ss.str() << std::endl;
+
+    if(tcp_tx(handle(), ss.str()) > 0) {
+        //sent successfully.
+        std::string response;
+        if(tcp_rx(handle(), response) > 0) {
+            return(response);
+        }
+    }
+    return(std::string());
 }
 
 /**

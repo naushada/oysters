@@ -86,6 +86,9 @@ namespace noor {
         Tls_Tcp_Geolocation_Service_Async  = 60,
         Tls_Tcp_Geolocation_Service_Sync,
 
+        Tls_Udp_Email_Service_Async = 70,
+        Tls_Udp_Email_Service_Sync,
+
     };
 }
 
@@ -512,6 +515,7 @@ class noor::Service {
         std::string buildHttpRedirectResponse(Http& http, std::string rsp_body = "");
         std::string buildHttpResponseOK(Http& http, std::string body, std::string contentType);
         std::string get_contentType(std::string ext);
+        std::string get_geolocation(const std::string& IP, const std::string& access_token);
 
         virtual std::string onReceive(std::string in) {
             std::cout << "line: " << __LINE__ << "Must be overriden " << std::endl;
