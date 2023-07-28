@@ -158,7 +158,7 @@ void noor::Http::parse_header(const std::string& in)
 std::string noor::Http::get_header(const std::string& in)
 {
   std::string header("");
-  auto offset = in.find_last_of("\r\n\r\n", in.length(), 4);
+  auto offset = in.find("\r\n\r\n", 0, 4);
   if(std::string::npos != offset) {
     header = in.substr(0, offset);
     return(header);
@@ -169,13 +169,38 @@ std::string noor::Http::get_header(const std::string& in)
 
 std::string noor::Http::get_body(const std::string& in)
 {
-  auto header = get_header(in);
+  //auto header = get_header(in);
+  std::stringstream result;
+
   auto cl = value("Content-Length");
   if(!cl.length()) {
+
+    if(!value("transfer-encoding").compare(0, 7, "chunked")) {
+      //Got the chunked Response the format is <len in hex>\r\n<payload>\r\n<0>\r\n end of response
+      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " transfer-encoding: " << value("transfer-encoding") << std::endl;
+      std::stringstream ss;
+      auto payload = in.substr(get_header(in).length());
+      ss << payload;
+
+      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " m_header: " << get_header(in) << std::endl;
+      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " ss: " << ss.str() << std::endl;
+
+      while(!ss.eof()) {
+        std::string len_str("");
+        std::string payload_str("");
+        std::getline(ss, len_str);
+        if(len_str.length()) {
+          std::getline(ss, payload_str);
+          result << payload_str;
+        }
+      };
+      std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " result: " << result.str() << std::endl;
+      return(result.str());
+    }
     return(std::string());
   }
 
-  auto body = in.substr(header.length(), in.length() - header.length());
+  auto body = in.substr(m_header.length(), in.length() - m_header.length());
   return(body);
 }
 
