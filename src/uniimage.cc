@@ -511,7 +511,7 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                             //for Geolocation.
                             Http http(request);
                             if(!http.uri().compare(0, 19, "/api/v1/geolocation")) {
-                                CreateServiceAndRegisterToEPoll(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, "api.ipstack.com", 443);
+                                CreateServiceAndRegisterToEPoll(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync, "api.ipstack.com", 80);
                                 auto svc = GetService(noor::ServiceType::Tls_Tcp_Geolocation_Service_Sync);
                                 if(svc == nullptr) {
                                     //build an error response
