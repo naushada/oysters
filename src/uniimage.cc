@@ -526,7 +526,7 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
 
                                 //Prepare Request to get geolocation 
                                 std::stringstream ss;
-                                ss << "GET /" << "45.252.181.52"//http.value("X-Forwarded-For")
+                                ss << "GET /" << http.value("X-Forwarded-For")
                                    << "?access_key=ae888b6de490466546b0dd51acac31ab"
                                    << " HTTP/1.1\r\n"
                                    << "Host: api.ipstack.com"
