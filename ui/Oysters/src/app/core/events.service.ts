@@ -34,8 +34,15 @@ export class EventsService implements OnDestroy {
 
   private defaultAction = (id:string, document: string) => { return({id, document});}
 
-  public subscribe(evt: {id: string, document:string}, eventHandler = this.defaultAction) : number {
+  /**
+   * 
+   * @param evt 
+   * @param eventHandler 
+   * @returns 
+   */
+  public subscribeEvent(evt: {id: string, document:string}, eventHandler = this.defaultAction) : number {
     if(this.eventList.indexOf(evt.id) == -1) {
+
       //Couldn't find the event.id to register for change.
       let filteredList:Array<string> = [];
       this.eventList.filter(what => {
@@ -44,28 +51,56 @@ export class EventsService implements OnDestroy {
         }
       });
 
-      if(!filteredList.length) {
-        return(-1);
-      } else {
+      if(filteredList.length) {
+        console.log(filteredList);
         //subscribe for change now.
+        filteredList.forEach((id: string) => {
+          this.subsink.add(this.bs$.subscribe(event => {
+            if(id == event.id) {
+              console.log("event: " + evt + " evt is Received invoking the registered Handler with document: "+ event.document);
+              eventHandler(event.id, event.document);
+            }
+          },
+          (error) => {
+            eventHandler("error", "error");
+          },
+          () => {
+            eventHandler("end", "end");
+          }));
+        });
+        return(0);
       }
 
     } else {
-      if(this.eventList.includes(evt.id)) {
-        this.subsink.add(this.bs$.subscribe(event => {
-          if(evt.id == event.id) {
-            console.log("event: " + evt + " evt is Received invoking the registered Handler with document: "+ event.document);
-            eventHandler(event.id, event.document);
-          }
-        },
-        (error) => {
-          eventHandler("error", "error");
-        },
-        () => {
-          eventHandler("end", "end");
-        }));
-      }
+      this.subsink.add(this.bs$.subscribe(event => {
+        if(evt.id == event.id) {
+          //console.log("event: " + evt + " evt is Received invoking the registered Handler with document: "+ event.document);
+          eventHandler(event.id, event.document);
+        }
+      },
+      (error) => {
+        eventHandler("error", "error");
+      },
+      () => {
+        eventHandler("end", "end");
+      }));
+      return(0);
     }
+    return(-1);
+  }
+
+  /**
+   * This function subscribes the events for dispatch notification. The event is dispatched by invoking the registered 
+   * callback.
+   * @param evtArg 
+   * @param eventHandler 
+   * @returns 
+   */
+  public subscribeEvents(evtArg: Array<{id: string, document:string}>, eventHandler = this.defaultAction) : number {
+    
+    evtArg.forEach((ent:{id:string, document:string}) => {
+      this.subscribeEvent(ent, eventHandler);
+    });
     return(0);
   }
 
