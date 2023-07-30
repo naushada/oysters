@@ -32,24 +32,39 @@ export class EventsService implements OnDestroy {
     this.bs$.next(event);
   }
 
-  private defaultAction = (document: string) => { return(document);}
+  private defaultAction = (id:string, document: string) => { return({id, document});}
 
-  public subscribe(evt: string, eventHandler = this.defaultAction) : number {
-    if(this.eventList.indexOf(evt) == -1) {
-      return(-1);
-    } else {
-      this.subsink.add(this.bs$.subscribe(event => {
-        if(evt == event.id) {
-          console.log("event: " + evt + " evt is Received invoking the registered Handler with document: "+ event.document);
-          eventHandler(event.document);
+  public subscribe(evt: {id: string, document:string}, eventHandler = this.defaultAction) : number {
+    if(this.eventList.indexOf(evt.id) == -1) {
+      //Couldn't find the event.id to register for change.
+      let filteredList:Array<string> = [];
+      this.eventList.filter(what => {
+        if(what.length >= evt.id.length && what.includes(evt.id)) {
+          filteredList.push(what);
         }
-      },
-      (error) => {
-        eventHandler("nil");
-      },
-      () => {
-        eventHandler("end");
-      }));
+      });
+
+      if(!filteredList.length) {
+        return(-1);
+      } else {
+        //subscribe for change now.
+      }
+
+    } else {
+      if(this.eventList.includes(evt.id)) {
+        this.subsink.add(this.bs$.subscribe(event => {
+          if(evt.id == event.id) {
+            console.log("event: " + evt + " evt is Received invoking the registered Handler with document: "+ event.document);
+            eventHandler(event.id, event.document);
+          }
+        },
+        (error) => {
+          eventHandler("error", "error");
+        },
+        () => {
+          eventHandler("end", "end");
+        }));
+      }
     }
     return(0);
   }
