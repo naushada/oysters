@@ -40,68 +40,10 @@ export class EventsService implements OnDestroy {
    * @param eventHandler 
    * @returns 
    */
-  public subscribeEvent(evt: {id: string, document:string}, eventHandler = this.defaultAction) : number {
-    if(this.eventList.indexOf(evt.id) == -1) {
-
-      //Couldn't find the event.id to register for change.
-      let filteredList:Array<string> = [];
-      this.eventList.filter(what => {
-        if(what.length >= evt.id.length && what.includes(evt.id)) {
-          filteredList.push(what);
-        }
-      });
-
-      if(filteredList.length) {
-        console.log(filteredList);
-        //subscribe for change now.
-        filteredList.forEach((id: string) => {
-          this.subsink.add(this.bs$.subscribe(event => {
-            if(id == event.id) {
-              console.log("event: " + evt + " evt is Received invoking the registered Handler with document: "+ event.document);
-              eventHandler(event.id, event.document);
-            }
-          },
-          (error) => {
-            eventHandler("error", "error");
-          },
-          () => {
-            eventHandler("end", "end");
-          }));
-        });
-        return(0);
-      }
-
-    } else {
-      this.subsink.add(this.bs$.subscribe(event => {
-        if(evt.id == event.id) {
-          //console.log("event: " + evt + " evt is Received invoking the registered Handler with document: "+ event.document);
-          eventHandler(event.id, event.document);
-        }
-      },
-      (error) => {
-        eventHandler("error", "error");
-      },
-      () => {
-        eventHandler("end", "end");
-      }));
-      return(0);
-    }
-    return(-1);
-  }
-
-  /**
-   * This function subscribes the events for dispatch notification. The event is dispatched by invoking the registered 
-   * callback.
-   * @param evtArg 
-   * @param eventHandler 
-   * @returns 
-   */
-  public subscribeEvents(evtArg: Array<{id: string, document:string}>, eventHandler = this.defaultAction) : number {
-    
-    evtArg.forEach((ent:{id:string, document:string}) => {
-      this.subscribeEvent(ent, eventHandler);
-    });
-    return(0);
+  public subscribe(eventHandler = this.defaultAction) {
+    this.subsink.add(this.bs$.subscribe((event: {id:string, document:string}) => {eventHandler(event.id, event.document);},
+        (error) => {eventHandler("error", "error");},
+        () => {eventHandler("end", "end");}));
   }
 
   ngOnDestroy(): void {
