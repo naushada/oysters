@@ -9,7 +9,11 @@ export class EventsService implements OnDestroy {
 
   private subsink = new SubSink();
   private bs$: BehaviorSubject<{id:string, document:string}> = new BehaviorSubject({id:"nil", document:"nil"});
-  private eventList:Array<string> = [
+
+  /**
+   * Event to be published.
+   */
+  public eventList:Array<string> = [
     "user.login",
     "user.logout",
     "user.password.reset",
@@ -30,6 +34,21 @@ export class EventsService implements OnDestroy {
    */
   public publish(event: {id:string, document:string}) {
     this.bs$.next(event);
+  }
+
+  /**
+   * Publish compelte event to Observer.
+   */
+  public complete() {
+    this.bs$.complete();
+  }
+
+  /**
+   * Publish Error to observer.
+   * @param event 
+   */
+  public error(event: {id:string, document:string}) {
+    this.bs$.error(event);
   }
 
   private defaultAction = (id:string, document: string) => { return({id, document});}
