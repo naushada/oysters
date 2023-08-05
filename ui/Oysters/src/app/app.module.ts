@@ -11,6 +11,10 @@ import { CreateAccountComponent } from './pages/account/create-account/create-ac
 import { UpdateAccountComponent } from './pages/account/update-account/update-account.component';
 import { ListAccountComponent } from './pages/account/list-account/list-account.component';
 import { VnavbarAccountComponent } from './pages/account/vnavbar-account/vnavbar-account.component';
+import { LogGrievanceComponent } from './pages/grivance/log-grievance/log-grievance.component';
+import { ListGrievanceComponent } from './pages/grivance/list-grievance/list-grievance.component';
+import { UpdateGrievanceComponent } from './pages/grivance/update-grievance/update-grievance.component';
+import { SendEmailComponent } from './pages/email/send-email/send-email.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +23,11 @@ import { VnavbarAccountComponent } from './pages/account/vnavbar-account/vnavbar
     CreateAccountComponent,
     UpdateAccountComponent,
     ListAccountComponent,
-    VnavbarAccountComponent
+    VnavbarAccountComponent,
+    LogGrievanceComponent,
+    ListGrievanceComponent,
+    UpdateGrievanceComponent,
+    SendEmailComponent
   ],
   imports: [
     BrowserModule,
