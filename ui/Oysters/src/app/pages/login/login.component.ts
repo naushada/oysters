@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IAccountInfo } from 'src/app/core/common';
 import { EventsService } from 'src/app/core/events.service';
+import { HttpService } from 'src/app/core/http.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +12,7 @@ import { EventsService } from 'src/app/core/events.service';
 export class LoginComponent {
 
   loginForm: FormGroup;
-  constructor(private fb:FormBuilder, private event:EventsService) {
+  constructor(private fb:FormBuilder, private event:EventsService, private http: HttpService) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -28,5 +30,14 @@ export class LoginComponent {
   onLogin() {
     console.log(this.username);
     console.log(this.password);
+    this.http.getaccountinfo(this.username, this.password).subscribe((accountinfo:IAccountInfo) => {
+      let id:string = "user.login";
+      let document: string = JSON.stringify(accountinfo);
+      this.event.publish({id, document});
+    },
+    (error) => {},
+    () => {
+
+    });
   }
 }
