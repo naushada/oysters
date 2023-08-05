@@ -1,5 +1,5 @@
 <div class="login-wrapper">
-    <form class="login">
+    <form class="login" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <section class="title">
             <h3 class="welcome">Welcome to</h3>
             <span class="trademark">
@@ -11,11 +11,11 @@
         <div class="login-group">
             <clr-input-container>
                 <label class="clr-sr-only">Username</label>
-                <input type="text" autocomplete="username" name="username" clrInput />
+                <input type="text" autocomplete="current-username" name="username" clrInput placeholder="Enter User ID" formControlName="username" />
             </clr-input-container>
             <clr-password-container>
                 <label class="clr-sr-only">Password</label>
-                <input type="password" autocomplete="current-password" name="password" clrPassword />
+                <input type="password" autocomplete="current-password" name="password" clrPassword placeholder="Enter Password" formControlName="password" />
             </clr-password-container>
             
         </div>
