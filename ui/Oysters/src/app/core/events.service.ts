@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription,filter,map } from 'rxjs';
 import { SubSink } from 'subsink';
 
 @Injectable({
@@ -59,13 +59,24 @@ export class EventsService implements OnDestroy {
    * @param eventHandler 
    * @returns 
    */
-  public subscribe(eventHandler = this.defaultAction) {
-    this.subsink.add(this.bs$.subscribe((event: {id:string, document:string}) => {eventHandler(event.id, event.document);},
-        (error) => {eventHandler("error", "error");},
-        () => {eventHandler("end", "end");}));
+  public subscribe(event: string, eventHandler = this.defaultAction) {
+    this.subsink.add(this.bs$.pipe(filter((evt: {id:string, document:string}) => evt.id == event), map((evt: {id:string, document:string}) => evt)).subscribe(
+      (e: {id:string, document:string}) => {eventHandler(e.id, e.document)},
+      (error) => {},
+      () => {}
+    ));
+  }
+
+  public on(event: {id:string, document:string}, eventHandler:any): Subscription {
+    return(this.bs$.pipe(filter((evt: {id:string, document:string}) => evt.id == event.id), map((evt: {id:string, document:string}) => evt)).subscribe(eventHandler));
   }
 
   ngOnDestroy(): void {
       this.subsink.unsubscribe();
   }
+
+  /*
+  public on(event: EventsService, action:any): Subscription {
+    return(this.bs$.pipe(filter((e:EmitEvent) => e.name == event),map((e:emitEvent) => e.value)).subscribe(action));
+  }*/
 }

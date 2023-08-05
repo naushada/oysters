@@ -10,8 +10,10 @@ import { EventsService } from './core/events.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Oysters';
   constructor(private evt: EventsService) {
-    //let evtHandler = (id:string, document: string) => {return({id, document});};
-    evt.subscribe(this.eventHandler);
+    evt.eventList.forEach((element:string) => {
+      evt.subscribe(element, this.eventHandler);  
+    });
+    
   }
 
   ngOnInit(): void {
@@ -29,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * @returns 
    */
   public eventHandler(id:string, document: string) {
+
     //Process event posted by other component.
     return({id, document});
   }
