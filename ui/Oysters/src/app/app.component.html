@@ -1,55 +1,32 @@
-<!--
-<clr-main-container>
-  <clr-header>
-      ...
-      <div class="header-nav" [clr-nav-level]="1">
-          ...
-      </div>
-      ...
-  </clr-header>
-  <div class="content-container">
-      <main class="content-area">
-          ...
-      </main>
-      <clr-vertical-nav [clr-nav-level]="2">
-          ...
-      </clr-vertical-nav>
-  </div>
-</clr-main-container>
--->
-
-
 <clr-main-container>
   <clr-header class="branding">
-    Branding
-    <label>Test123</label>
+    <span>
+      <img src="assets/images/Oysters-logo.jpg" width="80" height="59">
+    </span>
     
+    <div class="header-actions">
+      <clr-dropdown>
+        <button class="nav-icon" clrDropdownTrigger aria-label="toggle settings menu">
+            <cds-icon shape="cog"></cds-icon>
+            <cds-icon shape="angle" direction="down"></cds-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <a href="..." clrDropdownItem>About</a>
+          <a href="..." clrDropdownItem>Preferences</a>
+          <a href="..." clrDropdownItem>Log out</a>
+      </clr-dropdown-menu>
+  </clr-dropdown>
+    </div>
   </clr-header>
+
   <nav class="subnav" [clr-nav-level]="1" >
     <ul class="nav" style="margin-left: 20%;">
       <li class="nav-item" *ngFor="let menu of menubar.keys()">
-        <a class="nav-link" routerLink="/home" routerLinkActive="active" style="font-size: 18px;">{{menu}}</a>
+        <a class="nav-link" clrVerticalNavLink routerLink="/home" routerLinkActive="active" style="font-size: 18px;">{{menu}}</a>
       </li>
     </ul>
-      
   </nav>
   <app-vnavbar-account></app-vnavbar-account>
-    <!--
-  <div class="content-container">
-      <main class="content-area">
-        <app-vnavbar-account></app-vnavbar-account>    
-      </main>
-  
-      <clr-vertical-nav [clr-nav-level]="2">
-          ...
-      </clr-vertical-nav>
-      
-      
-  </div>
-  -->
 </clr-main-container>
 
-<!--<app-login></app-login>-->
-<!--<app-create-account></app-create-account>-->
-<!--<app-vnavbar-account></app-vnavbar-account>-->
 <router-outlet></router-outlet>
