@@ -15,6 +15,7 @@ import { LogGrievanceComponent } from './pages/grivance/log-grievance/log-grieva
 import { ListGrievanceComponent } from './pages/grivance/list-grievance/list-grievance.component';
 import { UpdateGrievanceComponent } from './pages/grivance/update-grievance/update-grievance.component';
 import { SendEmailComponent } from './pages/email/send-email/send-email.component';
+import { GvnabbarComponent } from './pages/grivance/gvnabbar/gvnabbar.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { SendEmailComponent } from './pages/email/send-email/send-email.componen
     LogGrievanceComponent,
     ListGrievanceComponent,
     UpdateGrievanceComponent,
-    SendEmailComponent
+    SendEmailComponent,
+    GvnabbarComponent
   ],
   imports: [
     BrowserModule,

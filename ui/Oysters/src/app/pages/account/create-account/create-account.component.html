@@ -1,1 +1,106 @@
-<p>create-account works!</p>
+<form>
+<div class="clr-container">
+    <!-- First ROW -->
+    <div class="clr-row clr-justify-content-sm-center">
+        <div class="clr-row">
+            <!--element 1-->
+            <div class="clr-col-6 clr-col-md">
+                <clr-input-container>
+                    <label for="userid">User ID</label>
+                    <input clrInput name="userid" formControlName="userid">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-6 clr-col-sm">
+                <clr-input-container>
+                    <label for="password">Password</label>
+                    <input clrInput name="password" formControlName="password">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-6 clr-col-sm">
+                <clr-input-container>
+                    <label for="username">Name</label>
+                    <input clrInput name="username" formControlName="username">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-6 clr-col-sm">
+                <clr-input-container>
+                    <label for="dob">Date of birth</label>
+                    <input clrInput type="date" name="dob" formControlName="dob">
+                </clr-input-container>
+            </div>
+        </div>
+    </div>
+    <!-- Second ROW -->
+    <div class="clr-row clr-justify-content-sm-center">
+        <div class="clr-row clr-align-items-start">
+            <div class="clr-row ">
+            <!--element 1-->
+            <div class="clr-col-6 clr-col-sm ">
+                
+                <clr-checkbox-container >
+                    <label>Role</label>
+                    <clr-checkbox-wrapper>
+                        <input type="checkbox" clrCheckbox name="teacher" required value="teacher" />
+                        <label>Teacher</label>
+                    </clr-checkbox-wrapper>
+
+                    <clr-checkbox-wrapper>
+                        <input type="checkbox" clrCheckbox name="student" required value="student"/>
+                        <label>Student</label>
+                    </clr-checkbox-wrapper>
+
+                    <clr-checkbox-wrapper>
+                        <input type="checkbox" clrCheckbox name="principal" required value="principal"/>
+                        <label>Principal</label>
+                    </clr-checkbox-wrapper>
+
+                    <clr-checkbox-wrapper>
+                        <input type="checkbox" clrCheckbox name="it" required value="it"/>
+                        <label>IT</label>
+                    </clr-checkbox-wrapper>
+
+                    <clr-checkbox-wrapper>
+                        <input type="checkbox" clrCheckbox name="admin" required value="admin"/>
+                        <label>Admin</label>
+                    </clr-checkbox-wrapper>
+
+                    <clr-checkbox-wrapper>
+                        <input type="checkbox" clrCheckbox name="pta" required value="pta"/>
+                        <label>PTA</label>
+                    </clr-checkbox-wrapper>
+
+                    <clr-checkbox-wrapper>
+                        <input type="checkbox" clrCheckbox name="external" required value="external"/>
+                        <label>External</label>
+                    </clr-checkbox-wrapper>
+
+                    <clr-checkbox-wrapper>
+                        <input type="checkbox" clrCheckbox name="parent" required value="parent"/>
+                        <label>Parent</label>
+                    </clr-checkbox-wrapper>
+                </clr-checkbox-container>
+            </div>
+        </div>
+            <div class="clr-col-6 clr-col-sm">
+                <clr-input-container>
+                    <label for="password">Password</label>
+                    <input clrInput name="password" formControlName="password">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-6 clr-col-sm">
+                <clr-input-container>
+                    <label for="username">Name</label>
+                    <input clrInput name="username" formControlName="username">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-6 clr-col-sm">
+                <clr-input-container>
+                    <label for="dob">Date of birth</label>
+                    <input clrInput type="date" name="dob" formControlName="dob">
+                </clr-input-container>
+            </div>
+        </div>
+    </div>
+    <!-- Third ROW -->
+  </div>
+  </form>
