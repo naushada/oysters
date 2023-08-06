@@ -1,1 +1,15 @@
-<p>gvnabbar works!</p>
+
+<div class="main-container">
+    <div class="content-container">
+        <clr-vertical-nav>
+            <a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>Create Grievance</b></a>
+            <a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>Status Grievances</b></a>
+            <a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>Update Grievance</b></a>
+        </clr-vertical-nav>
+        <div class="content-area">
+            <app-log-grievance></app-log-grievance>
+            <app-update-grievance></app-update-grievance>
+            <app-list-grievance></app-list-grievance>
+        </div>
+    </div>
+</div>
