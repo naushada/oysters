@@ -1,4 +1,4 @@
-<form>
+<form clrForm clrLayout="vertical" clrLabelSize="2">
 <div class="clr-container">
     <!-- First ROW -->
     <div class="clr-row clr-justify-content-sm-center">
@@ -26,6 +26,59 @@
                 <clr-input-container>
                     <label for="dob">Date Of Birth</label>
                     <input clrInput type="date" name="dob" formControlName="dob">
+                </clr-input-container>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Third ROW -->
+    <div class="clr-row clr-justify-content-sm-center">
+        <div class="clr-row">
+            <!--element 1-->
+            
+        
+            <div class="clr-col-6 clr-col-sm">
+                <clr-textarea-container>
+                    <label>Address</label>
+                    <textarea clrTextarea name="address" required></textarea>
+                </clr-textarea-container>
+
+            </div>
+            <div class="clr-col-6 clr-col-sm">
+                <clr-input-container>
+                    <label for="pincode">Pin Code (Number)</label>
+                    <input clrInput name="pincode" formControlName="pincode">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-6 clr-col-sm">
+                <clr-input-container>
+                    <label for="cityname">City Name</label>
+                    <input clrInput name="cityname" formControlName="cityname">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-6 clr-col-sm ">
+                <clr-input-container>
+                    <label for="statename">State (Province) Name</label>
+                    <input clrInput name="statename" formControlName="statename">
+                </clr-input-container>
+            </div>
+        </div>
+    </div>
+    <!-- Fourth ROW -->
+    <div class="clr-row clr-justify-content-sm-center">
+        <div class="clr-row">
+            <!--element 1-->
+            
+            <div class="clr-col-6 clr-col-sm">
+                <clr-input-container>
+                    <label for="countryname">Country Name</label>
+                    <input clrInput name="countryname" formControlName="countryname">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-6 clr-col-sm ">
+                <clr-input-container>
+                    <label for="aadhaarnumber">Aadhaar Number</label>
+                    <input clrInput name="aadhaarnumber" formControlName="aadhaarnumber">
                 </clr-input-container>
             </div>
         </div>
@@ -94,58 +147,8 @@
             </div>
             <div class="clr-col-6 clr-col-sm">
                 <clr-input-container>
-                    <label for="enrolementdate">Date Of Enrolment</label>
-                    <input clrInput type="date" name="enrolementdate" formControlName="enrolementdate">
-                </clr-input-container>
-            </div>
-        </div>
-    </div>
-    <!-- Third ROW -->
-    <div class="clr-row clr-justify-content-sm-center">
-        <div class="clr-row">
-            <!--element 1-->
-            <div class="clr-col-6 clr-col-sm ">
-                <clr-input-container>
-                    <label for="aadhaarnumber">Aadhaar Number</label>
-                    <input clrInput name="aadhaarnumber" formControlName="aadhaarnumber">
-                </clr-input-container>
-            </div>
-        
-            <div class="clr-col-6 clr-col-sm">
-                <clr-textarea-container>
-                    <label>Address</label>
-                    <textarea clrTextarea name="address" required></textarea>
-                </clr-textarea-container>
-
-            </div>
-            <div class="clr-col-6 clr-col-sm">
-                <clr-input-container>
-                    <label for="pincode">Pin Code (Number)</label>
-                    <input clrInput name="pincode" formControlName="pincode">
-                </clr-input-container>
-            </div>
-            <div class="clr-col-6 clr-col-sm">
-                <clr-input-container>
-                    <label for="cityname">City Name</label>
-                    <input clrInput name="cityname" formControlName="cityname">
-                </clr-input-container>
-            </div>
-        </div>
-    </div>
-    <!-- Fourth ROW -->
-    <div class="clr-row clr-justify-content-sm-center">
-        <div class="clr-row">
-            <!--element 1-->
-            <div class="clr-col-6 clr-col-sm ">
-                <clr-input-container>
-                    <label for="statename">State (Province) Name</label>
-                    <input clrInput name="statename" formControlName="statename">
-                </clr-input-container>
-            </div>
-            <div class="clr-col-6 clr-col-sm">
-                <clr-input-container>
-                    <label for="countryname">Country Name</label>
-                    <input clrInput name="countryname" formControlName="countryname">
+                    <label for="dateofadmision">Date Of Admision</label>
+                    <input clrInput type="date" name="dateofadmision" formControlName="dateofadmision">
                 </clr-input-container>
             </div>
         </div>
