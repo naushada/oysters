@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EventsService } from './core/events.service';
+import { subnavbarMap } from './core/common';
+
 
 @Component({
   selector: 'app-root',
@@ -9,6 +11,7 @@ import { EventsService } from './core/events.service';
 
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Oysters';
+  menubar = subnavbarMap;
   constructor(private evt: EventsService) {
     evt.eventList.forEach((element:string) => {
       evt.subscribe(element, this.eventHandler);  

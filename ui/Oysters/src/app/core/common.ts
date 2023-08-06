@@ -69,3 +69,12 @@ export const City: Array<string>  = [
     "Hyderabad ",
     "New Delhi"
 ];
+
+export let subnavbarMap = new Map<string, Array<string>> ([
+    ["Dashboard",   ["Admin", "Principal"]],
+    ["Status",      ["Admin", "Principal"]],
+    ["Account",     ["Principal", "Admin", "It"]],
+    ["Inventory",   ["Admin", "Principal", "Teacher"]],
+    ["Grievances",  ["*"]],
+    ["Logout",      ["*"]]
+]);

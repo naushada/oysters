@@ -25,8 +25,13 @@
     <label>Test123</label>
     
   </clr-header>
-  <nav class="subnav" [clr-nav-level]="1">
-      Naushad Ahmed
+  <nav class="subnav" [clr-nav-level]="1" >
+    <ul class="nav" style="margin-left: 20%;">
+      <li class="nav-item" *ngFor="let menu of menubar.keys()">
+        <a class="nav-link" routerLink="/home" routerLinkActive="active" style="font-size: 18px;">{{menu}}</a>
+      </li>
+    </ul>
+      
   </nav>
   <app-vnavbar-account></app-vnavbar-account>
     <!--
