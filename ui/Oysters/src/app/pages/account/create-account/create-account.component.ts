@@ -31,7 +31,9 @@ export class CreateAccountComponent {
       role: '',
       emailid: '',
       cellnumber:'',
-      dateofadmision:''
+      dateofadmision:'',
+      fathername:'',
+      mothername:''
 
     });
   }
