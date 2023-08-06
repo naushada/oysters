@@ -1,67 +1,91 @@
-<form clrForm clrLayout="vertical">
-    <div class="clr-container ">
+<form clrForm clrLayout="vertical" [formGroup]="createaccountForm" (ngSubmit)="onSubmit()">
+    <div class="clr-container">
         <!-- First ROW -->
-        <div class="clr-row clr-justify-content-sm-center">
+        <div class="clr-row">
             <!--element 1-->
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-input-container>
                     <label for="userid">User ID</label>
                     <input clrInput name="userid" formControlName="userid">
                 </clr-input-container>
             </div>
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-input-container>
                     <label for="password">Password</label>
                     <input clrInput name="password" formControlName="password">
                 </clr-input-container>
             </div>
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-input-container>
                     <label for="username">Name</label>
                     <input clrInput name="username" formControlName="username">
                 </clr-input-container>
             </div>
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-input-container>
                     <label for="dob">Date Of Birth</label>
                     <input clrInput type="date" name="dob" formControlName="dob">
                 </clr-input-container>
             </div>
-            <div class="clr-w-100"></div>
+            <div class="w-100"></div>
             <!-- Third ROW -->
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-textarea-container>
                     <label>Address</label>
                     <textarea clrTextarea name="address" required></textarea>
                 </clr-textarea-container>
             </div>
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-input-container>
                     <label for="pincode">Pin Code (Number)</label>
                     <input clrInput name="pincode" formControlName="pincode">
                 </clr-input-container>
             </div>
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
+                <clr-select-container>
+                    <label for="cityname">City Name</label>
+                    <select clrSelect name="cityname" formControlName="cityname">
+                        <option [value]="city" *ngFor="let city of cities">{{city}}</option>
+                    </select>
+                </clr-select-container>
+                <!--
                 <clr-input-container>
                     <label for="cityname">City Name</label>
                     <input clrInput name="cityname" formControlName="cityname">
                 </clr-input-container>
+                -->
             </div>
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
+                <clr-select-container>
+                    <label for="statename">State (Province) Name</label>
+                    <select clrSelect name="statename" formControlName="statename">
+                        <option [value]="state" *ngFor="let state of states">{{state}}</option>
+                    </select>
+                </clr-select-container>
+                <!--
                 <clr-input-container>
                     <label for="statename">State (Province) Name</label>
                     <input clrInput name="statename" formControlName="statename">
                 </clr-input-container>
+                -->
             </div>
-            <div class="clr-w-100"></div>
+            <div class="w-100"></div>
             <!--element 1-->
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
+                <clr-select-container>
+                    <label for="countryname">Country Name</label>
+                    <select clrSelect name="countryname" formControlName="countryname">
+                        <option [value]="country" *ngFor="let country of countries">{{country}}</option>
+                    </select>
+                </clr-select-container>
+                <!--
                 <clr-input-container>
                     <label for="countryname">Country Name</label>
                     <input clrInput name="countryname" formControlName="countryname">
                 </clr-input-container>
+                -->
             </div>
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-input-container>
                     <label for="aadhaarnumber">Aadhaar Number</label>
                     <input clrInput name="aadhaarnumber" formControlName="aadhaarnumber">
@@ -69,61 +93,39 @@
             </div>
             <!-- Second ROW -->
             <!--element 1-->
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-checkbox-container >
                     <label>Role</label>
-                    <clr-checkbox-wrapper>
-                        <input type="checkbox" clrCheckbox name="teacher" required value="teacher" />
-                        <label>Teacher</label>
-                    </clr-checkbox-wrapper>
-                    <clr-checkbox-wrapper>
-                        <input type="checkbox" clrCheckbox name="student" required value="student"/>
-                        <label>Student</label>
-                    </clr-checkbox-wrapper>
-                    <clr-checkbox-wrapper>
-                        <input type="checkbox" clrCheckbox name="principal" required value="principal"/>
-                        <label>Principal</label>
-                    </clr-checkbox-wrapper>
-                    <clr-checkbox-wrapper>
-                        <input type="checkbox" clrCheckbox name="it" required value="it"/>
-                        <label>IT</label>
-                    </clr-checkbox-wrapper>
-                    <clr-checkbox-wrapper>
-                        <input type="checkbox" clrCheckbox name="admin" required value="admin"/>
-                        <label>Admin</label>
-                    </clr-checkbox-wrapper>
-                    <clr-checkbox-wrapper>
-                        <input type="checkbox" clrCheckbox name="pta" required value="pta"/>
-                        <label>PTA</label>
-                    </clr-checkbox-wrapper>
-                    <clr-checkbox-wrapper>
-                        <input type="checkbox" clrCheckbox name="external" required value="external"/>
-                        <label>External</label>
-                    </clr-checkbox-wrapper>
-                    <clr-checkbox-wrapper>
-                        <input type="checkbox" clrCheckbox name="parent" required value="parent"/>
-                        <label>Parent</label>
+                    <clr-checkbox-wrapper *ngFor="let role of roles">
+                        <input type="checkbox" clrCheckbox name="role|lowercase" required value="role|lowercase" formControlName="role" />
+                        <label>{{role}}</label>
                     </clr-checkbox-wrapper>
                 </clr-checkbox-container>
             </div>
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-textarea-container>
                     <label>Email ID(s)</label>
-                    <textarea clrTextarea name="emailid" required></textarea>
+                    <textarea clrTextarea name="emailid" required formControlName="emailid"></textarea>
                 </clr-textarea-container>
             </div>
-            <div class="clr-w-100"></div>
-            <div class="clr-col">
+            <div class="w-100"></div>
+            <div class="clr-col-3 clr-col-lg">
                 <clr-textarea-container>
                     <label>Cell Number(s)</label>
-                    <textarea clrTextarea name="cellnumber" required></textarea>
+                    <textarea clrTextarea name="cellnumber" required formControlName="cellnumber"></textarea>
                 </clr-textarea-container>
             </div>
-            <div class="clr-col">
+            <div class="clr-col-3 clr-col-lg">
                 <clr-input-container>
                     <label for="dateofadmision">Date Of Admision</label>
                     <input clrInput type="date" name="dateofadmision" formControlName="dateofadmision">
                 </clr-input-container>
+            </div>
+            <div class="clr-col-3 clr-col-lg">
+
+            </div>
+            <div class="clr-col-3 clr-col-lg">
+                
             </div>
         </div>
     </div>

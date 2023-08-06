@@ -34,3 +34,38 @@ export interface IStatus {
 	"ts": Date,
 	"ip": string
 }
+
+export const Role: Array<string>  = [
+    "Teacher",
+    "Student",
+    "Principal",
+    "IT",
+    "Admin",
+    "Pta",
+    "External",
+    "Parent"
+];
+
+export const Country: Array<string>  = [
+    "India",
+    "China",
+    "Pakistan",
+    "Bangladesh",
+    "USA",
+    "Canada",
+    "France",
+];
+
+export const State: Array<string>  = [
+    "Maharastra",
+    "Telangana",
+    "Uttar Pradesh",
+    "New Delhi"
+];
+
+export const City: Array<string>  = [
+    "Pune",
+    "Mumbai",
+    "Hyderabad ",
+    "New Delhi"
+];
