@@ -78,3 +78,16 @@ export let subnavbarMap = new Map<string, Array<string>> ([
     ["Grievances",  ["*"]],
     ["Logout",      ["*"]]
 ]);
+
+export let Priority:Array<string> = [
+    "Hight",
+    "Medium",
+    "Low"
+]
+
+export let GrievanceResolution:Array<string> = [
+    "Open",
+    "Resolved",
+    "Re-open",
+    "Inprogress"
+]

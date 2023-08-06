@@ -1,1 +1,28 @@
-<p>list-grievance works!</p>
+
+<clr-datagrid>
+    <clr-dg-column>Resolution</clr-dg-column>
+    <clr-dg-column>Resolved On</clr-dg-column>
+    <clr-dg-column>Resolved By</clr-dg-column>
+    <clr-dg-column>Grievance</clr-dg-column>
+    <clr-dg-column>Grievance Description</clr-dg-column>
+    <clr-dg-column>Grievance Priority</clr-dg-column>
+    <clr-dg-column>Created On</clr-dg-column>
+
+    <clr-dg-row>
+        <clr-dg-cell></clr-dg-cell>
+        <clr-dg-cell></clr-dg-cell>
+        <clr-dg-cell></clr-dg-cell>
+        <clr-dg-cell></clr-dg-cell>
+        <clr-dg-cell></clr-dg-cell>
+        <clr-dg-cell></clr-dg-cell>
+        <clr-dg-cell></clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+		<clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "10">
+			<clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Grievance Per Page</clr-dg-page-size>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+        of {{pagination.totalItems}} Grievances
+        </clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>

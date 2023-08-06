@@ -1,1 +1,55 @@
-<p>update-grievance works!</p>
+<form clrForm clrLayout="vertical" [formGroup]="updategrievanceForm" (ngSubmit)="onSubmit()">
+    <div class="clr-container">
+        <!-- First ROW -->
+        <div class="clr-row">
+            <!--element 1-->
+            <div class="clr-col-6 clr-col-lg">
+                <clr-textarea-container>
+                    <label for="grievance">Grievance</label>
+                    <textarea clrTextarea name="grievance" required></textarea>
+                </clr-textarea-container>
+            </div>
+            <div class="clr-col-6 clr-col-lg">
+                <clr-textarea-container>
+                    <label for="grievancedetails">Grievance Details</label>
+                    <textarea clrTextarea name="grievancedetails" required></textarea>
+                </clr-textarea-container>
+
+            </div>
+            <div class="clr-col-6 clr-col-lg">
+                <clr-select-container>
+                    <label for="priority">Priority</label>
+                    <select clrSelect name="priority" formControlName="priority">
+                        <option [value]="priority" *ngFor="let priority of priorities">{{priority}}</option>
+                    </select>
+                </clr-select-container>
+            </div>
+
+            <div class="clr-col-6 clr-col-lg">
+                <clr-select-container>
+                    <label for="resolution">Resolution</label>
+                    <select clrSelect name="resolution" formControlName="resolution">
+                        <option [value]="resolution" *ngFor="let resolution of resolutions">{{resolution}}</option>
+                    </select>
+                </clr-select-container>
+            </div>
+
+            <div class="clr-col-6 clr-col-lg">
+                <clr-textarea-container>
+                    <label for="resolutiondetails">Resolution Details</label>
+                    <textarea clrTextarea name="resolutiondetails" required></textarea>
+                </clr-textarea-container>
+            </div>
+
+            <div class="clr-col-6 clr-col-lg">
+                <clr-input-container>
+                    <label for="createdon">Grievance Resolved On</label>
+                    <input clrInput type="date" name="createdon" formControlName="createdon">
+                </clr-input-container>
+            </div>
+        </div>
+    </div>
+    <div>
+        <cds-button class="btn btn-primary">Create Grievance</cds-button>
+    </div>
+</form>
