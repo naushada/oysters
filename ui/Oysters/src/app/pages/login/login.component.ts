@@ -28,8 +28,10 @@ export class LoginComponent {
   }
 
   onLogin() {
-    console.log(this.username);
-    console.log(this.password);
+    //console.log(this.username);
+    //console.log(this.password);
+    
+    this.event.publish({id: "user.login", document: "{\"a\": 10}"});
     this.http.getaccountinfo(this.username, this.password).subscribe((accountinfo:IAccountInfo) => {
       let id:string = "user.login";
       let document: string = JSON.stringify(accountinfo);

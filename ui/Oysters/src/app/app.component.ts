@@ -14,14 +14,17 @@ export class AppComponent implements OnInit, OnDestroy {
   menubar = subnavbarMap;
   selectedItem:string = "Grievances";
   constructor(private evt: EventsService) {
+    /*
     evt.eventList.forEach((element:string) => {
       evt.subscribe(element, this.eventHandler);  
     });
+    */
+   evt.subscribe("user.login", this.eventHandler);
     
   }
 
   ngOnInit(): void {
-      
+      //this.selectedItem = "login";
   }
 
   ngOnDestroy(): void {
@@ -35,6 +38,10 @@ export class AppComponent implements OnInit, OnDestroy {
    * @returns 
    */
   public eventHandler(id:string, document: string) {
+    if(id == "user.login") {
+      alert("eventsfrom user.login: " + id + " document: " + document);
+      this.selectedItem = "Grievances";
+    }
     //alert(id);
     //Process event posted by other component.
     return({id, document});
