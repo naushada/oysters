@@ -1,9 +1,9 @@
 <div class="main-container">
     <div class="content-container">
-        <clr-vertical-nav *ngFor="let vnav of vnavs">
-            <a class = "nav-link nav-text" [class.active] = "" (click)="onClick(vnav)"><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>Create Account</b></a>
-            <a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>Update Account</b></a>
-            <a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>List Account</b></a>
+        <clr-vertical-nav>
+            <a *ngFor="let vnav of vnavs" class = "nav-link nav-text" [class.active] = "true" (click)="onClick(vnav)"><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>{{vnav}}</b></a>
+            <!--<a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>Update Account</b></a>-->
+            <!--<a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>List Account</b></a>-->
         </clr-vertical-nav>
         <div class="content-area">
             <app-create-account></app-create-account>
