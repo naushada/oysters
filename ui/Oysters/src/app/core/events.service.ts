@@ -59,7 +59,7 @@ export class EventsService implements OnDestroy {
    * @param eventHandler 
    * @returns 
    */
-  public subscribe(event: string, eventHandler = this.defaultAction) {
+  public subscribe(event: string, eventHandler:any) {
     this.subsink.add(this.bs$.pipe(filter((evt: {id:string, document:string}) => evt.id == event), map((evt: {id:string, document:string}) => evt)).subscribe(
       (e: {id:string, document:string}) => {eventHandler(e.id, e.document)},
       (error) => {},

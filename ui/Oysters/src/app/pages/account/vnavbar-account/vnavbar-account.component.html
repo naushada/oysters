@@ -1,7 +1,7 @@
 <div class="main-container">
     <div class="content-container">
-        <clr-vertical-nav>
-            <a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>Create Account</b></a>
+        <clr-vertical-nav *ngFor="let vnav of vnavs">
+            <a class = "nav-link nav-text" [class.active] = "" (click)="onClick(vnav)"><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>Create Account</b></a>
             <a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>Update Account</b></a>
             <a class = "nav-link nav-text" [class.active] = "" ><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>List Account</b></a>
         </clr-vertical-nav>
