@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { subnavbarMap, vnavbarMap } from 'src/app/core/common';
 import { EventsService } from 'src/app/core/events.service';
 
@@ -7,15 +7,18 @@ import { EventsService } from 'src/app/core/events.service';
   templateUrl: './vnavbar-account.component.html',
   styleUrls: ['./vnavbar-account.component.scss']
 })
-export class VnavbarAccountComponent {
+export class VnavbarAccountComponent implements OnInit {
   vnavbar = vnavbarMap;
   subnavbar = subnavbarMap;
   vnavs = this.vnavbar.get("Account");
-  selectedItem: string = "";
+  selectedItem: string = "Create Account";
   constructor(private evt:EventsService) {
     evt.subscribe("Account", this.eventHandler);
   }
 
+  ngOnInit(): void {
+    
+  }
   public eventHandler(ent: {id:string, document: string}) {
     return({id: ent.id, document:ent.document});
   }

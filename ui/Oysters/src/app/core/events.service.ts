@@ -8,7 +8,7 @@ import { SubSink } from 'subsink';
 export class EventsService implements OnDestroy {
 
   private subsink = new SubSink();
-  private bs$: BehaviorSubject<{id:string, document:string}> = new BehaviorSubject({id:"nil", document:"nil"});
+  private bs$: BehaviorSubject<{id:string, document:string}> = new BehaviorSubject<{id:string, document:string}>({id:"nil", document:"nil"});
 
   /**
    * Event to be published.
@@ -61,7 +61,7 @@ export class EventsService implements OnDestroy {
    */
   public subscribe(event: string, eventHandler:any) {
     this.subsink.add(this.bs$.pipe(filter((evt: {id:string, document:string}) => evt.id == event), map((evt: {id:string, document:string}) => evt)).subscribe(
-      (e: {id:string, document:string}) => {eventHandler(e.id, e.document)},
+      (e: {id:string, document:string}) => {alert(e);eventHandler(e.id, e.document)},
       (error) => {},
       () => {}
     ));

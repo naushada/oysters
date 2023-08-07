@@ -12,6 +12,7 @@ import { subnavbarMap } from './core/common';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Oysters';
   menubar = subnavbarMap;
+  selectedItem:string = "Grievances";
   constructor(private evt: EventsService) {
     evt.eventList.forEach((element:string) => {
       evt.subscribe(element, this.eventHandler);  
@@ -34,8 +35,12 @@ export class AppComponent implements OnInit, OnDestroy {
    * @returns 
    */
   public eventHandler(id:string, document: string) {
-
+    alert(id);
     //Process event posted by other component.
     return({id, document});
+  }
+
+  onClick(item: string) {
+    this.selectedItem = item;
   }
 }

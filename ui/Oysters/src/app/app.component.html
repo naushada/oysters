@@ -20,14 +20,16 @@
   </clr-header>
 
   <nav class="subnav" [clr-nav-level]="1" >
-    <ul class="nav" style="margin-left: 20%;">
+    <ul class="nav" style="margin-left: 20%; cursor: pointer;">
       <li class="nav-item" *ngFor="let menu of menubar.keys()">
-        <a class="nav-link" clrVerticalNavLink routerLink="/home" routerLinkActive="active" style="font-size: 18px;">{{menu}}</a>
+        <a class="nav-link" clrVerticalNavLink [class.active] = "selectedItem == menu" (click)="onClick(menu)" style="font-size: 18px;">{{menu}}</a>
       </li>
     </ul>
   </nav>
-  <app-vnavbar-account></app-vnavbar-account>
-  <app-gvnabbar></app-gvnabbar>
+  <div [ngSwitch]="selectedItem">
+    <app-vnavbar-account *ngSwitchCase="'Account'"></app-vnavbar-account>
+    <app-gvnabbar *ngSwitchCase="'Grievances'"></app-gvnabbar>
+  </div>
 </clr-main-container>
 
 <router-outlet></router-outlet>
