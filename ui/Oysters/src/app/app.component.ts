@@ -35,12 +35,13 @@ export class AppComponent implements OnInit, OnDestroy {
    * @returns 
    */
   public eventHandler(id:string, document: string) {
-    alert(id);
+    //alert(id);
     //Process event posted by other component.
     return({id, document});
   }
 
   onClick(item: string) {
     this.selectedItem = item;
+    this.evt.publish({id:item, document:""});
   }
 }

@@ -13,19 +13,23 @@ export class VnavbarAccountComponent implements OnInit {
   vnavs = this.vnavbar.get("Account");
   selectedItem: string = "Create Account";
   constructor(private evt:EventsService) {
-    evt.subscribe("Account", this.eventHandler);
+    //evt.subscribe("Account", this.eventHandler);
   }
 
   ngOnInit(): void {
     
   }
   public eventHandler(ent: {id:string, document: string}) {
+    if(ent.id == "Account") {
+      this.selectedItem = "Create Account";
+      console.log(this.selectedItem);
+    }
     return({id: ent.id, document:ent.document});
   }
 
   onClick(item: string) {
     this.selectedItem = item;
-    this.evt.publish({id: item, document: ""});
+    //this.evt.publish({id: item, document: ""});
 
   }
 }

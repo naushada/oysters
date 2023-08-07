@@ -3,12 +3,10 @@
         <clr-vertical-nav>
             <a style="cursor: pointer" *ngFor="let vnav of vnavs" class = "nav-link nav-text" [class.active] = "selectedItem == vnav" (click)="onClick(vnav)"><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>{{vnav}}</b></a>
         </clr-vertical-nav>
-        <div class="content-area">
-            <div *ngSwitch="selectedItem">
-                <app-create-account *ngSwitchCase="'Create Account'"></app-create-account>
-                <app-list-account *ngSwitchCase="'List Account'"></app-list-account>
-                <app-update-account *ngSwitchCase="'Update Account'"></app-update-account>
-            </div>
+        <div class="content-area" [ngSwitch]="selectedItem">
+            <app-create-account *ngSwitchCase="'Create Account'"></app-create-account>
+            <app-list-account *ngSwitchCase="'List Account'"></app-list-account>
+            <app-update-account *ngSwitchCase="'Update Account'"></app-update-account>
         </div>
     </div>
 </div>

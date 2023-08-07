@@ -80,18 +80,18 @@ export let subnavbarMap = new Map<string, Array<string>> ([
 ]);
 
 export let vnavbarMap = new Map<string, Array<string>>([
-    ["Account", ["Create Account", "Update Account", "List Account"]],
+    ["Account",                 ["Create Account", "Update Account", "List Account"]],
     // Access right for a given Option.
-    ["Create Account", ["Principal", "Admin", "It"]],
-    ["Create Update", ["Principal", "Admin", "It"]],
-    ["List Account", ["Principal", "Admin", "It"]],
+    ["Create Account",          ["Principal", "Admin", "It"]],
+    ["Create Update",           ["Principal", "Admin", "It"]],
+    ["List Account",            ["Principal", "Admin", "It"]],
     //Vertical NAV Bar.
-    ["Grievances", ["Create Grievance", "Status Grievances", "Update Grievance"]],
+    ["Grievances",              ["Create Grievance", "Status Grievances", "Update Grievance"]],
     // Access right for a given option.
-    ["Create Grievance", ["*"]],
-    ["Status Grievances", ["*"]],
-    ["Update Grievance", ["Principal", "Teacher", "Admin", "It"]],
-    ["Inventory", ["Create Inventory", "Status Inventories", "Update Inventories"]]
+    ["Create Grievance",        ["*"]],
+    ["Status Grievances",       ["*"]],
+    ["Update Grievance",        ["Principal", "Teacher", "Admin", "It"]],
+    ["Inventory",               ["Create Inventory", "Status Inventories", "Update Inventories"]]
 ]);
 
 export let Priority:Array<string> = [
