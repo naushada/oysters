@@ -11,7 +11,7 @@ export class VnavbarAccountComponent {
   vnavbar = vnavbarMap;
   subnavbar = subnavbarMap;
   vnavs = this.vnavbar.get("Account");
-
+  selectedItem: string = "";
   constructor(private evt:EventsService) {
     evt.subscribe("Account", this.eventHandler);
   }
@@ -21,6 +21,7 @@ export class VnavbarAccountComponent {
   }
 
   onClick(item: string) {
+    this.selectedItem = item;
     this.evt.publish({id: item, document: ""});
 
   }
