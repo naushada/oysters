@@ -19,6 +19,7 @@ import { SendEmailComponent } from './pages/email/send-email/send-email.componen
 import { GvnabbarComponent } from './pages/grivance/gvnabbar/gvnabbar.component';
 import { CdsIconModule, CdsModule } from '@cds/angular';
 import '@cds/core/alert/register.js';
+import { MainComponent } from './pages/main/main.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import '@cds/core/alert/register.js';
     ListGrievanceComponent,
     UpdateGrievanceComponent,
     SendEmailComponent,
-    GvnabbarComponent
+    GvnabbarComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
