@@ -76,7 +76,7 @@ export let subnavbarMap = new Map<string, Array<string>> ([
     ["Account",     ["Principal", "Admin", "It"]],
     ["Inventory",   ["Admin", "Principal", "Teacher"]],
     ["Grievances",  ["*"]],
-    ["Logout",      ["*"]]
+    ["PTA",         ["*"]]
 ]);
 
 export let vnavbarMap = new Map<string, Array<string>>([
@@ -91,7 +91,8 @@ export let vnavbarMap = new Map<string, Array<string>>([
     ["Create Grievance",        ["*"]],
     ["Status Grievances",       ["*"]],
     ["Update Grievance",        ["Principal", "Teacher", "Admin", "It"]],
-    ["Inventory",               ["Create Inventory", "Status Inventories", "Update Inventories"]]
+    ["Inventory",               ["Create Inventory", "Status Inventories", "Update Inventories"]],
+    ["PTA",                     ["PTA-2023-2024", "PTA-2024-2025", "PTA-2025-2026", "PTA-2026-2027"]]
 ]);
 
 export let Priority:Array<string> = [

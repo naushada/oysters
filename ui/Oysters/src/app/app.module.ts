@@ -20,6 +20,7 @@ import { GvnabbarComponent } from './pages/grivance/gvnabbar/gvnabbar.component'
 import { CdsIconModule, CdsModule } from '@cds/angular';
 import { MainComponent } from './pages/main/main.component';
 import { ClarityIcons, userIcon, homeIcon, vmBugIcon, cogIcon, eyeIcon, barsIcon, newIcon } from '@cds/core/icon';
+import { PtaMainComponent } from './pages/pta-main/pta-main.component';
 ClarityIcons.addIcons(homeIcon, vmBugIcon, cogIcon, eyeIcon, barsIcon,userIcon, newIcon);
 
 @NgModule({
@@ -35,7 +36,8 @@ ClarityIcons.addIcons(homeIcon, vmBugIcon, cogIcon, eyeIcon, barsIcon,userIcon, 
     UpdateGrievanceComponent,
     SendEmailComponent,
     GvnabbarComponent,
-    MainComponent
+    MainComponent,
+    PtaMainComponent
   ],
   imports: [
     BrowserModule,
