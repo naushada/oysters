@@ -1,0 +1,16 @@
+version: '3'
+services: 
+  oyster_web_portal:
+    image: naushada/oysters:latest
+    ports: 
+      - 58080:58080
+      - 58989:58989
+
+  mongodb:
+    image: naushada/mongodb:latest
+    ports:
+     - 27017
+     - 28017
+
+  
+
