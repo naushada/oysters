@@ -18,8 +18,9 @@ import { UpdateGrievanceComponent } from './pages/grivance/update-grievance/upda
 import { SendEmailComponent } from './pages/email/send-email/send-email.component';
 import { GvnabbarComponent } from './pages/grivance/gvnabbar/gvnabbar.component';
 import { CdsIconModule, CdsModule } from '@cds/angular';
-import '@cds/core/alert/register.js';
 import { MainComponent } from './pages/main/main.component';
+import { ClarityIcons, userIcon, homeIcon, vmBugIcon, cogIcon, eyeIcon, barsIcon, newIcon } from '@cds/core/icon';
+ClarityIcons.addIcons(homeIcon, vmBugIcon, cogIcon, eyeIcon, barsIcon,userIcon, newIcon);
 
 @NgModule({
   declarations: [
