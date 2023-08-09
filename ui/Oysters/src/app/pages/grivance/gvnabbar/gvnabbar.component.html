@@ -2,7 +2,7 @@
 <div class="main-container">
     <div class="content-container">
         <clr-vertical-nav>
-            <a style="cursor: pointer" *ngFor="let vnav of vnavs" class = "nav-link nav-text" [class.active] = "selectedItem == vnav" (click)="onClick(vnav)"><cds-icon clrVerticalNavIcon shape="new"></cds-icon><b>{{vnav}}</b></a>
+            <a style="cursor: pointer" *ngFor="let vnav of vnavs" class = "nav-link nav-text" [class.active] = "selectedItem == vnav" (click)="onClick(vnav)"><b>{{vnav}}</b></a>
         </clr-vertical-nav>
         <div class="content-area" [ngSwitch]="selectedItem">
             <app-log-grievance *ngSwitchCase="'Create Grievance'"></app-log-grievance>
