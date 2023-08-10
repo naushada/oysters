@@ -37,7 +37,7 @@ export interface IMember {
 };
 
 export interface IPTA {
-    year: Date;
+    academic_year: string;
     pta: Array<IMember>;
 };
 

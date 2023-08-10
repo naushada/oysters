@@ -2,7 +2,7 @@
 <clr-datagrid [(clrDgSelected)]="selected">
     <clr-dg-column>Year</clr-dg-column>
     <clr-dg-row *clrDgItems="let ent of ptas" [clrDgItem]="ent">
-        <clr-dg-cell>{{ent.year}}</clr-dg-cell>
+        <clr-dg-cell>{{ent.academic_year}}</clr-dg-cell>
     </clr-dg-row>
     <clr-dg-footer>
 		<clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "ptas.length">
@@ -13,7 +13,7 @@
     </clr-dg-footer>
 
     <clr-dg-detail *clrIfDetail="let ent">
-        <clr-dg-detail-header>{{ent.year}}</clr-dg-detail-header>
+        <clr-dg-detail-header>{{ent.academic_year}}</clr-dg-detail-header>
         <clr-dg-detail-body>
             <clr-datagrid>
                 <clr-dg-column>Grade</clr-dg-column>
