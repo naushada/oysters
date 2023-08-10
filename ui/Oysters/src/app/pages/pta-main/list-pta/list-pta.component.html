@@ -1,0 +1,33 @@
+
+<clr-datagrid>
+    <clr-dg-column>Grade</clr-dg-column>
+    <clr-dg-column>Name</clr-dg-column>
+    <clr-dg-column>Role</clr-dg-column>
+    <clr-dg-column>Cell Number</clr-dg-column>
+    
+
+    <clr-dg-row>
+        
+        <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="false">
+            <clr-dg-cell>Grade 2</clr-dg-cell>
+            <clr-dg-cell>Testing</clr-dg-cell>
+            <clr-dg-cell>Member</clr-dg-cell>
+            <clr-dg-cell></clr-dg-cell>
+        </clr-dg-row-detail>
+        <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="false">
+            <clr-dg-cell>Grade 3</clr-dg-cell>
+            <clr-dg-cell>Testing</clr-dg-cell>
+            <clr-dg-cell>Member</clr-dg-cell>
+            <clr-dg-cell></clr-dg-cell>
+        </clr-dg-row-detail>
+        <clr-dg-cell>2023-2024</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+		<clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "10">
+			<clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Member per page</clr-dg-page-size>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+        of {{pagination.totalItems}} Member
+        </clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>

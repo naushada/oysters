@@ -21,6 +21,8 @@ import { CdsIconModule, CdsModule } from '@cds/angular';
 import { MainComponent } from './pages/main/main.component';
 import { ClarityIcons, userIcon, homeIcon, vmBugIcon, cogIcon, eyeIcon, barsIcon, newIcon } from '@cds/core/icon';
 import { PtaMainComponent } from './pages/pta-main/pta-main.component';
+import { CreatePtaComponent } from './pages/pta-main/create-pta/create-pta.component';
+import { ListPtaComponent } from './pages/pta-main/list-pta/list-pta.component';
 ClarityIcons.addIcons(homeIcon, vmBugIcon, cogIcon, eyeIcon, barsIcon,userIcon, newIcon);
 
 @NgModule({
@@ -37,7 +39,9 @@ ClarityIcons.addIcons(homeIcon, vmBugIcon, cogIcon, eyeIcon, barsIcon,userIcon, 
     SendEmailComponent,
     GvnabbarComponent,
     MainComponent,
-    PtaMainComponent
+    PtaMainComponent,
+    CreatePtaComponent,
+    ListPtaComponent
   ],
   imports: [
     BrowserModule,

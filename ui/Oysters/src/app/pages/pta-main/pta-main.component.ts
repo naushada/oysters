@@ -10,7 +10,7 @@ export class PtaMainComponent {
 
   vnavbar = vnavbarMap;
   vnavs = this.vnavbar.get("PTA");
-  selectedItem: string = "PTA-2023-2024";
+  selectedItem: string = "Create PTA";
 
   onClick(item: string) {
     this.selectedItem = item;

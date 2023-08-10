@@ -28,6 +28,20 @@ export interface IAccountInfo {
 
 }
 
+export interface IMember {
+    grade: string;
+    name: string;
+    cellnumber:string;
+    //Member/Secretary/Teacher
+    role: string;
+};
+
+export interface IPTA {
+    year: Date;
+    pta: Array<IMember>;
+};
+
+
 export interface IStatus {
     "result": string, //Success/Failure
 	"reason": string, //When Status=Failure then this will be present
@@ -92,7 +106,7 @@ export let vnavbarMap = new Map<string, Array<string>>([
     ["Status Grievances",       ["*"]],
     ["Update Grievance",        ["Principal", "Teacher", "Admin", "It"]],
     ["Inventory",               ["Create Inventory", "Status Inventories", "Update Inventories"]],
-    ["PTA",                     ["PTA-2023-2024", "PTA-2024-2025", "PTA-2025-2026", "PTA-2026-2027"]]
+    ["PTA",                     ["Create PTA", "List PTA"]]
 ]);
 
 export let Priority:Array<string> = [

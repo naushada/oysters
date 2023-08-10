@@ -5,7 +5,8 @@
             <a style="cursor: pointer" *ngFor="let vnav of vnavs" class = "nav-link nav-text" [class.active] = "selectedItem == vnav" (click)="onClick(vnav)"><b>{{vnav}}</b></a>
         </clr-vertical-nav>
         <div class="content-area" [ngSwitch]="selectedItem">
-            <app-log-grievance *ngSwitchCase="'PTA-2023-2024'"></app-log-grievance>
+            <app-create-pta *ngSwitchCase="'Create PTA'"></app-create-pta>
+            <app-list-pta *ngSwitchCase="'List PTA'"></app-list-pta>
         </div>
     </div>
 </div>
