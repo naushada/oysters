@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-create-pta',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class CreatePtaComponent {
 
+  createptaForm: FormGroup;
+  constructor(private fb: FormBuilder) {
+    this.createptaForm = fb.group({});
+  }
+
+  onSubmit() {
+    
+  }
 }
