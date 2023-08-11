@@ -4,27 +4,13 @@
         <div class="clr-row">
             <!--element 1-->
             <div class="clr-col-6 clr-col-lg">
-                <clr-textarea-container>
-                    <label for="grievance">Grievance</label>
-                    <textarea clrTextarea name="grievance" required></textarea>
-                </clr-textarea-container>
+                <clr-input-container>
+                    <label for="grievanceid">Grievance ID</label>
+                    <input clrInput name="grievanceid" formControlName="grievanceid">
+                </clr-input-container>
+                <cds-button class="btn btn-primary">Retrieve Grievance Details</cds-button>
             </div>
-            <div class="clr-col-6 clr-col-lg">
-                <clr-textarea-container>
-                    <label for="grievancedetails">Grievance Details</label>
-                    <textarea clrTextarea name="grievancedetails" required></textarea>
-                </clr-textarea-container>
-
-            </div>
-            <div class="clr-col-6 clr-col-lg">
-                <clr-select-container>
-                    <label for="priority">Priority</label>
-                    <select clrSelect name="priority" formControlName="priority">
-                        <option [value]="priority" *ngFor="let priority of priorities">{{priority}}</option>
-                    </select>
-                </clr-select-container>
-            </div>
-
+            <div class="w-100"></div>
             <div class="clr-col-6 clr-col-lg">
                 <clr-select-container>
                     <label for="resolution">Resolution</label>
@@ -37,7 +23,7 @@
             <div class="clr-col-6 clr-col-lg">
                 <clr-textarea-container>
                     <label for="resolutiondetails">Resolution Details</label>
-                    <textarea clrTextarea name="resolutiondetails" required></textarea>
+                    <textarea clrTextarea name="resolutiondetails" required rows="8" cols="30"></textarea>
                 </clr-textarea-container>
             </div>
 
@@ -47,9 +33,40 @@
                     <input clrInput type="date" name="createdon" formControlName="createdon">
                 </clr-input-container>
             </div>
+            <div class="clr-col-6 clr-col-lg">
+
+            </div>
+            <div class="w-100"></div>
+            <div class="clr-col-6 clr-col-lg">
+                <clr-select-container>
+                    <label for="priority">Priority</label>
+                    <select clrSelect name="priority" formControlName="priority">
+                        <option [value]="priority" *ngFor="let priority of priorities">{{priority}}</option>
+                    </select>
+                </clr-select-container>
+            </div>
+            
+            <div class="clr-col-6 clr-col-lg">
+                <clr-textarea-container>
+                    <label for="grievance">Grievance (Problem Type) </label>
+                    <textarea clrTextarea name="grievance" disabled rows="8" cols="30"></textarea>
+                    <clr-control-helper>Read Only</clr-control-helper>
+                </clr-textarea-container>
+            </div>
+            <div class="clr-col-6 clr-col-lg">
+                <clr-textarea-container>
+                    <label for="grievancedetails">Grievance Details</label>
+                    <textarea clrTextarea name="grievancedetails" disabled cols="30" rows="8"></textarea>
+                    <clr-control-helper>Read Only</clr-control-helper>
+                </clr-textarea-container>
+
+            </div>
+            <div class="clr-col-6 clr-col-lg">
+                
+            </div>
         </div>
     </div>
     <div>
-        <cds-button class="btn btn-primary">Create Grievance</cds-button>
+        <cds-button class="btn btn-primary">Update Grievance</cds-button>
     </div>
 </form>

@@ -6,17 +6,21 @@
             <!--element 1-->
             <div class="clr-col-6 clr-col-lg">
                 <clr-textarea-container>
-                    <label for="grievance">Grievance</label>
-                    <textarea clrTextarea name="grievance" required></textarea>
+                    <label for="grievance">Grievance (Problem Type)</label>
+                    <textarea clrTextarea name="grievance" required rows="8" cols="50"></textarea>
                 </clr-textarea-container>
             </div>
             <div class="clr-col-6 clr-col-lg">
                 <clr-textarea-container>
                     <label for="grievancedetails">Grievance Details</label>
-                    <textarea clrTextarea name="grievancedetails" required></textarea>
+                    <textarea clrTextarea name="grievancedetails" required rows="8" cols="50"></textarea>
                 </clr-textarea-container>
 
             </div>
+            <div class="clr-col-6 clr-col-lg">
+                
+            </div>
+            <div class="w-100"></div>
             <div class="clr-col-6 clr-col-lg">
                 <clr-select-container>
                     <label for="priority">Priority</label>
@@ -30,6 +34,12 @@
                 <clr-input-container>
                     <label for="createdon">Grievance Created On</label>
                     <input clrInput type="date" name="createdon" formControlName="createdon">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-6 clr-col-lg">
+                <clr-input-container>
+                    <label for="createdby">Grievance Created By</label>
+                    <input clrInput name="createdby" formControlName="createdby">
                 </clr-input-container>
             </div>
         </div>

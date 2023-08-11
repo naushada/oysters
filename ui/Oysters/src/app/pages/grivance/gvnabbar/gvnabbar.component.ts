@@ -18,7 +18,6 @@ export class GvnabbarComponent {
 
 
   onClick(item: string) {
-    alert("item: " + item)
     this.selectedItem = item;
     //this.evt.publish({id: item, document: ""});
 
