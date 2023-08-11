@@ -1097,7 +1097,7 @@ std::vector<struct option> options = {
     {"web-port",                  required_argument, 0, 'w'},
     {"wan-interface-instance",    required_argument, 0, 'a'},
     {"protocol",                  required_argument, 0, 't'},
-    {"self-ip",                   required_argument, 0, 's'},
+    {"mongodb-uri",               required_argument, 0, 's'},
     {"self-port",                 required_argument, 0, 'e'},
     {"timeout",                   required_argument, 0, 'o'},
     {"machine",                   required_argument, 0, 'm'},
@@ -1167,7 +1167,7 @@ int main(std::int32_t argc, char *argv[]) {
             break;
             case 's':
             {
-                config.emplace(std::make_pair("self-ip", optarg));
+                config.emplace(std::make_pair("mongodb-uri", optarg));
             }
             break;
             case 'e':
@@ -1217,7 +1217,7 @@ int main(std::int32_t argc, char *argv[]) {
                           << "--server-ip <ip address of server> " << std::endl
                           << "--server-port <server port number> " << std::endl
                           << "--web-port  <server-web-port for http request> " << std::endl
-                          << "--self-ip   <self ip for bind receive request> " << std::endl
+                          << "--mongodb-uri   <uri for mongodb> " << std::endl
                           << "--self-port <self port for bind to receive request> " << std::endl
                           << "--protocol  <tcp|udp|unix/tls> " << std::endl
                           << "--wan-interface-instance <c1|c3|c4|c5|w1|w2|e1|e2|e3> " << std::endl
@@ -1279,6 +1279,11 @@ int main(std::int32_t argc, char *argv[]) {
             std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " protocol is not supported " << std::endl;
             exit(0);
         }
+
+        if(config["mongodb-uri"].length()) {
+            inst.dbinst(std::make_unique<MongodbClient>(config["mongodb-uri"]));
+        }
+
         std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " listening on PORT:" << config["web-port"] << std::endl;
         inst.CreateServiceAndRegisterToEPoll(noor::ServiceType::Tcp_Web_Server_Service, config["server-ip"], std::stoi(config["web-port"]));
     }

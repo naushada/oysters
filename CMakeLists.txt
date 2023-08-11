@@ -3,7 +3,8 @@ project(uniimage)
 
 add_subdirectory(mongodb)
 
-#include_directories(/usr/local/include/bsoncxx/v_noabi)
+include_directories(/usr/local/include/bsoncxx/v_noabi)
+include_directories(/usr/local/include/mongocxx/v_noabi)
 
 #Adding Complier flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -g -Wall -Wextra")

@@ -5,12 +5,12 @@ services:
     ports: 
       - 58080:58080
       - 58989:58989
-
+    depends_on:
+      - mongodb
   mongodb:
     image: naushada/mongodb:latest
     ports:
-     - 27017
-     - 28017
-
-  
-
+      - 27017
+      - 28017
+    volumes:
+      - ./data:/data/db

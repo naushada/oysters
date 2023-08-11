@@ -48,7 +48,7 @@
 #include <openssl/x509_vfy.h>
 
 #include "http.hpp"
-
+#include "mongodbc.h"
 
 
 namespace noor {
@@ -111,17 +111,20 @@ class noor::Uniimage {
             return(m_cache);
         }
 
-        Uniimage() : m_epollFd(-1), m_evts(), m_services(), m_cache() {}
+        Uniimage() : m_epollFd(-1), m_evts(), m_services(), m_cache(), m_dbinst(nullptr) {}
         ~Uniimage() {
             ::close(m_epollFd);
             m_services.clear();
             m_cache.clear();
             m_evts.clear();
             m_config.clear();
+            m_dbinst.reset(nullptr);
         }
 
         std::unordered_map<std::string, std::string> get_config() const {return(m_config);}
         void set_config(std::unordered_map<std::string, std::string> cfg) {m_config = cfg;}
+        MongodbClient& dbinst() { return (*m_dbinst.get());}
+        void dbinst(std::unique_ptr<MongodbClient> inst) { m_dbinst = std::move(inst);}
 
     private:
         std::int32_t m_epollFd;
@@ -130,6 +133,7 @@ class noor::Uniimage {
         //The key is serial number of device. and value is json object.
         std::unordered_map<std::string, std::string> m_cache;
         std::unordered_map<std::string, std::string> m_config;
+        std::unique_ptr<MongodbClient> m_dbinst;
 };
 
 /**
