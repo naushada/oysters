@@ -64,7 +64,7 @@ export class CreateAccountComponent {
         "country":        this.createaccountForm.value.country
       },
       "logininfo": {
-        "userid":         (this.createaccountForm.value.username).replaceAll(' ', '.') ,
+        "userid":         (this.createaccountForm.value.username).replaceAll(' ', '.').toLowerCase() ,
         "password":       this.createaccountForm.value.password,
         "role": []
       },
