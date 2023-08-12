@@ -88,6 +88,8 @@ export class CreateAccountComponent {
         console.log(response.reason);
         console.log(response.result);
         console.log(response.ts);
+        alert("Account Created Successfully");
+        this.createaccountForm.reset('');
       },
       (error) => {},
       () => {});

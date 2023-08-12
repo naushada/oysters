@@ -483,7 +483,9 @@ class noor::Service {
         Service() {
             m_handle = -1; 
             m_connected_clients.clear();
+            m_dbinst.reset(nullptr);
         }
+
         Service(std::unordered_map<std::string, std::string> config) {
             if(config.empty()) {
                 std::cout << "line: " << __LINE__ << " config is empty" << std::endl;
@@ -505,9 +507,9 @@ class noor::Service {
         std::int32_t web_rx(std::string& data);
 
         std::string build_web_response(Http& http);
-        std::string process_web_request(const std::string& req);
+        std::string process_web_request(const std::string& req, auto& dbinst);
         std::string handleGetMethod(Http& http);
-        std::string handlePostMethod(Http& http);
+        std::string handlePostMethod(Http& http, auto& dbinst);
         std::string handlePutMethod(Http& http);
         std::string handleDeleteMethod(Http& http);
         std::string handleOptionsMethod(Http& http);

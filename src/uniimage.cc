@@ -357,15 +357,6 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                              */
                             m_services.insert(std::make_pair(noor::ServiceType::Tcp_Web_Client_Connected_Service , std::make_unique<TcpClient>(newFd, IP, PORT)));
                             RegisterToEPoll(noor::ServiceType::Tcp_Web_Client_Connected_Service, newFd);
-                            // Create mongodb client instance for this connection
-                            if(noor::ServiceType::Tcp_Web_Client_Connected_Service == serviceType) {
-                                if(get_config()["mongodb-uri"].length()) {
-                                    auto svc = GetService(serviceType, newFd);
-                                    if(nullptr != svc) {
-                                        svc->dbinst(std::make_unique<MongodbClient>(get_config()["mongodb-uri"]));
-                                    }
-                                }
-                            }
                         }
                     }
                     break;
@@ -549,7 +540,7 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                                 break;
                             }
 
-                            auto rsp = svc->process_web_request(request);
+                            auto rsp = svc->process_web_request(request, GetService(noor::ServiceType::Tcp_Web_Server_Service)->dbinst());
                             if(rsp.length()) {
                                 auto ret = svc->tcp_tx(Fd, rsp);
                                 break;
@@ -1291,6 +1282,10 @@ int main(std::int32_t argc, char *argv[]) {
 
         std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " listening on PORT:" << config["web-port"] << std::endl;
         inst.CreateServiceAndRegisterToEPoll(noor::ServiceType::Tcp_Web_Server_Service, config["server-ip"], std::stoi(config["web-port"]));
+        auto svc = inst.GetService(noor::ServiceType::Tcp_Web_Server_Service);
+        if(svc != nullptr) {
+            svc->dbinst(std::make_unique<MongodbClient>(config["mongodb-uri"]));
+        }
     }
 
     //The Unit of timeout is in millisecond.
@@ -1733,14 +1728,15 @@ std::string noor::Service::handleGetMethod(Http& http) {
     return(std::string());
 }
 
-std::string noor::Service::handlePostMethod(Http& http) {
+std::string noor::Service::handlePostMethod(Http& http, auto& dbinst) {
     std::stringstream ss("");
 
+    
     if(!http.uri().compare(0, 15, "/api/v1/account")) {
         auto body = json::parse(http.body());
         std::cout << "line: " << __LINE__ << " json payload: " << body.dump() << std::endl;
         //Create a new document in account collection.
-        auto response = dbinst().create_documentEx("account", http.body());
+        auto response = dbinst.create_documentEx("account", http.body());
         std::cout << "line: " << __LINE__ << " response: " << response << std::endl;
         auto jobj = json::object();
         jobj["result"] = "success";
@@ -1749,7 +1745,7 @@ std::string noor::Service::handlePostMethod(Http& http) {
         jobj["ts"] = "";
         jobj["ip"] = http.value("X-Forwarded-For");
 
-        if(response.length()) {
+        if(!response.length()) {
             jobj["result"] = "failure";
             jobj["statuscode"] = 500;
         }
@@ -1774,13 +1770,13 @@ std::string noor::Service::handleDeleteMethod(Http& http) {
 }
 
 
-std::string noor::Service::process_web_request(const std::string& req) {
+std::string noor::Service::process_web_request(const std::string& req, auto& dbinst) {
     Http http(req);
 
     if(!http.method().compare("GET")) {
         return(handleGetMethod(http));
     } else if(!http.method().compare("POST")) {
-        return(handlePostMethod(http));
+        return(handlePostMethod(http, dbinst));
     } else if(!http.method().compare("PUT")) {
         return(handlePutMethod(http));
     } else if(!http.method().compare("OPTIONS")) {

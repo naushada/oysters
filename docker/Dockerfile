@@ -107,6 +107,6 @@ WORKDIR /opt/xAPP/uniimage
 # copy from previoud build stage
 RUN cp /root/oysters/build/uniimage .
 
-ENV ARGS="--role server --server-port 58989  --protocol tcp"
+ENV ARGS="--role server --server-port 58989  --protocol tcp --mongodb-uri mongodb+srv://oysters:oysters123@cluster0.acpda.mongodb.net/oysters?maxPoolSize=50"
 ENV PORT=58080
 CMD "/opt/xAPP/uniimage/uniimage" --web-port ${PORT} ${ARGS}
