@@ -56,7 +56,7 @@ export class CreateAccountComponent {
         "fathername":     this.createaccountForm.value.fathername,
         "mothername":     this.createaccountForm.value.mothername
       },
-      "address": {
+      "addressinfo": {
         "address":        this.createaccountForm.value.address,
         "pincode":        this.createaccountForm.value.pincode,
         "city":           this.createaccountForm.value.city,
@@ -64,15 +64,15 @@ export class CreateAccountComponent {
         "country":        this.createaccountForm.value.country
       },
       "logininfo": {
-        "userid": (this.createaccountForm.value.username).replaceAll(' ', '.') ,
+        "userid":         (this.createaccountForm.value.username).replaceAll(' ', '.') ,
         "password":       this.createaccountForm.value.password,
         "role": []
       },
       "contactinfo": {
         "emails": (this.createaccountForm.value.emailid).split(',') ,
-        "cellnumbers": (this.createaccountForm.value.emailid).split(',')
+        "cellnumbers": (this.createaccountForm.value.cellnumber).split(',')
       },
-      "academichistory" : [
+      "academichistoryinfo" : [
         {
           "grade":          this.createaccountForm.value.grade,
           "section":        this.createaccountForm.value.section,

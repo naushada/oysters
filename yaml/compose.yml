@@ -5,12 +5,10 @@ services:
     ports: 
       - 58080:58080
       - 58989:58989
-    depends_on:
-      - mongodb
-  mongodb:
-    image: naushada/mongodb:latest
-    ports:
-      - 27017
-      - 28017
     volumes:
-      - ./data:/data/db
+      - /home/mnahmed/sw/git/oysters/build:/opt/xAPP/uniimage
+      - /home/mnahmed/sw/git/oysters/ui/Oysters/dist:/opt/xAPP/webgui
+    environment:
+      - PORT=58080
+      - ARGS="--webport 58080 --role server --protocol tcp --timeout 1000 --server-port 58989 --mongodb-uri mongodb+srv://oysters:oysters123@cluster0.acpda.mongodb.net/oysters?maxPoolSize=50"
+    #command: ["/opt/xAPP/uniimage/uniimage", "--webport 58080 --role server --protocol tcp --timeout 1000 --server-port 58989" ]

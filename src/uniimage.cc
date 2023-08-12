@@ -66,15 +66,6 @@ std::int32_t noor::Uniimage::CreateServiceAndRegisterToEPoll(noor::ServiceType s
                 auto inst = std::make_unique<TcpClient>(IP, PORT, channel, isAsync);
                 m_services.insert(std::make_pair(serviceType, std::move(inst)));
                 RegisterToEPoll(serviceType, channel);
-
-                if(noor::ServiceType::Tcp_Web_Client_Connected_Service == serviceType) {
-                    if(get_config()["mongodb-uri"].length()) {
-                        auto svc = GetService(serviceType, inst->handle());
-                        if(nullptr != svc) {
-                            svc->dbinst(std::make_unique<MongodbClient>(get_config()["mongodb-uri"]));
-                        }
-                    }
-                }
             }
             break;
 
@@ -366,6 +357,15 @@ std::int32_t noor::Uniimage::start(std::int32_t toInMilliSeconds) {
                              */
                             m_services.insert(std::make_pair(noor::ServiceType::Tcp_Web_Client_Connected_Service , std::make_unique<TcpClient>(newFd, IP, PORT)));
                             RegisterToEPoll(noor::ServiceType::Tcp_Web_Client_Connected_Service, newFd);
+                            // Create mongodb client instance for this connection
+                            if(noor::ServiceType::Tcp_Web_Client_Connected_Service == serviceType) {
+                                if(get_config()["mongodb-uri"].length()) {
+                                    auto svc = GetService(serviceType, newFd);
+                                    if(nullptr != svc) {
+                                        svc->dbinst(std::make_unique<MongodbClient>(get_config()["mongodb-uri"]));
+                                    }
+                                }
+                            }
                         }
                     }
                     break;
@@ -1737,10 +1737,12 @@ std::string noor::Service::handlePostMethod(Http& http) {
     std::stringstream ss("");
 
     if(!http.uri().compare(0, 15, "/api/v1/account")) {
-        auto jobj = json::parse(http.body());
+        auto body = json::parse(http.body());
+        std::cout << "line: " << __LINE__ << " json payload: " << body.dump() << std::endl;
         //Create a new document in account collection.
         auto response = dbinst().create_documentEx("account", http.body());
-        jobj = json::object();
+        std::cout << "line: " << __LINE__ << " response: " << response << std::endl;
+        auto jobj = json::object();
         jobj["result"] = "success";
         jobj["reason"] = "";
         jobj["statuscode"] = 200;
@@ -1850,7 +1852,8 @@ std::int32_t noor::Service::web_rx(std::int32_t channel, std::string& data) {
 
         } else {
             std::cout << "function: "<< __FUNCTION__ << " line: " << __LINE__ <<" value of Content-Length " << cl << std::endl;
-            payload_len = std::stoi(cl) + http.header().length() + 1;
+            payload_len = std::stoi(cl) + http.header().length();
+            std::cout << "line: " << __LINE__ << " payload_len: " << payload_len << " len: " << len << " header_len: " << http.header().length() << std::endl;
             if(len == payload_len) {
                 //We have received the full HTTP packet
                 len = tcp_rx(channel, req, payload_len);

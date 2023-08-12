@@ -59,7 +59,7 @@
             <div class="clr-col-3 clr-col-lg">
                 <clr-textarea-container>
                     <label>Address</label>
-                    <textarea clrTextarea name="address" required></textarea>
+                    <textarea clrTextarea name="address" formControlName="address"></textarea>
                 </clr-textarea-container>
             </div>
             <div class="clr-col-3 clr-col-lg">
@@ -124,7 +124,7 @@
                 <clr-checkbox-container >
                     <label>Role</label>
                     <clr-checkbox-wrapper *ngFor="let role of roles">
-                        <input type="checkbox" clrCheckbox name="role|lowercase" required value="role|lowercase" formControlName="role" />
+                        <input type="checkbox" clrCheckbox name="role|lowercase" value="role|lowercase" formControlName="role" />
                         <label>{{role}}</label>
                     </clr-checkbox-wrapper>
                 </clr-checkbox-container>
@@ -132,14 +132,14 @@
             <div class="clr-col-3 clr-col-lg">
                 <clr-textarea-container>
                     <label>Email ID(s)</label>
-                    <textarea clrTextarea name="emailid" required formControlName="emailid"></textarea>
+                    <textarea clrTextarea name="emailid" formControlName="emailid"></textarea>
                 </clr-textarea-container>
             </div>
             <div class="w-100"></div>
             <div class="clr-col-3 clr-col-lg">
                 <clr-textarea-container>
                     <label>Cell Number(s)</label>
-                    <textarea clrTextarea name="cellnumber" required formControlName="cellnumber"></textarea>
+                    <textarea clrTextarea name="cellnumber" formControlName="cellnumber"></textarea>
                 </clr-textarea-container>
             </div>
             <div class="clr-col-3 clr-col-lg">
