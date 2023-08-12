@@ -58,3 +58,52 @@ Response:
 	}
 }
 
+URI --- /api/v1/account 
+Method --- GET (Retrieve), POST (Create), PUT (Update), DELETE (Delete)
+Request:
+{
+	"personalinfo": {
+		"name": "",
+		"dob": ,
+		"grade": "",
+		"section": "",
+		"rollnumber": "",
+		"academicyear": "",
+		"dateofadmision": ,
+		"fathername": "",
+		"mothername": ""
+	},
+	"address": {
+		"address": "",
+		"pincode": ,
+		"city": "",
+		"state": "",
+		"country": ""
+	},
+	"logininfo": {
+		"userid": "",
+		"password": "",
+		"role": []
+	},
+	"contactinfo": {
+		"emails": [],
+		"cellnumbers": []
+	},
+	"academichistory" : [
+		{
+			"grade": "",
+			"section": "",
+			"rollnumber": "",
+			"academinyear": ""
+		}
+	]
+}
+
+Response:
+{
+	"status": "success/failure",
+	"statuscode": ,
+	"reason": "",
+	"ts": ,
+	"ip": ""
+}

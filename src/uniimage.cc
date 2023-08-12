@@ -66,6 +66,15 @@ std::int32_t noor::Uniimage::CreateServiceAndRegisterToEPoll(noor::ServiceType s
                 auto inst = std::make_unique<TcpClient>(IP, PORT, channel, isAsync);
                 m_services.insert(std::make_pair(serviceType, std::move(inst)));
                 RegisterToEPoll(serviceType, channel);
+
+                if(noor::ServiceType::Tcp_Web_Client_Connected_Service == serviceType) {
+                    if(get_config()["mongodb-uri"].length()) {
+                        auto svc = GetService(serviceType, inst->handle());
+                        if(nullptr != svc) {
+                            svc->dbinst(std::make_unique<MongodbClient>(get_config()["mongodb-uri"]));
+                        }
+                    }
+                }
             }
             break;
 
@@ -1280,10 +1289,6 @@ int main(std::int32_t argc, char *argv[]) {
             exit(0);
         }
 
-        if(config["mongodb-uri"].length()) {
-            inst.dbinst(std::make_unique<MongodbClient>(config["mongodb-uri"]));
-        }
-
         std::cout << __TIMESTAMP__ << " line: " << __LINE__ << " listening on PORT:" << config["web-port"] << std::endl;
         inst.CreateServiceAndRegisterToEPoll(noor::ServiceType::Tcp_Web_Server_Service, config["server-ip"], std::stoi(config["web-port"]));
     }
@@ -1640,7 +1645,7 @@ std::string noor::Service::handleOptionsMethod(Http& http) {
 std::string noor::Service::handleGetMethod(Http& http) {
 
     std::stringstream ss("");
-    if(!http.uri().compare(0, 14, "/api/v1/db/get")) {
+    if(!http.uri().compare(0, 15, "/api/v1/account")) {
         auto jobj = json::parse(http.body());
         if(jobj["action"] != nullptr) {
 
@@ -1658,6 +1663,12 @@ std::string noor::Service::handleGetMethod(Http& http) {
                 std::cout << __TIMESTAMP__ << " line " << __LINE__ << " action not supported yet" << std::endl;
             }
         }
+
+    } else if(!http.uri().compare(0, 17, "/api/v1/grievance")) {
+
+    } else if(!http.uri().compare(0, 11, "/api/v1/pta")) {
+
+    } else if(!http.uri().compare(0, 14, "/api/v1/report")) {
 
     } else if((!http.uri().compare(0, 7, "/webui/"))) {
         /* build the file name now */
@@ -1723,39 +1734,34 @@ std::string noor::Service::handleGetMethod(Http& http) {
 }
 
 std::string noor::Service::handlePostMethod(Http& http) {
-
     std::stringstream ss("");
-    if(!http.uri().compare(0, 14, "/api/v1/db/get")) {
+
+    if(!http.uri().compare(0, 15, "/api/v1/account")) {
         auto jobj = json::parse(http.body());
+        //Create a new document in account collection.
+        auto response = dbinst().create_documentEx("account", http.body());
+        jobj = json::object();
+        jobj["result"] = "success";
+        jobj["reason"] = "";
+        jobj["statuscode"] = 200;
+        jobj["ts"] = "";
+        jobj["ip"] = http.value("X-Forwarded-For");
 
-        
-        
-        return(buildHttpRedirectResponse(http));
-    } else if(!http.uri().compare(0, 14, "/api/v1/db/set")) {
-        auto jobj = json::parse(http.body());
-
-        if(jobj["action"] != nullptr) {
-
-            if(jobj["action"].is_string() && !jobj["action"].get<std::string>().compare(0, 7, "account")) {
-                //Process Query string parameter
-                if(jobj["input"] != nullptr && jobj["input"].is_object() && jobj["input"]["accountinfo"] != nullptr && jobj["input"]["accountinfo"].is_object()) {
-                    //Create Account for a given user.
-                }
-            } else if(jobj["action"].is_string() && !jobj["action"].get<std::string>().compare(0, 9, "grievance")) {
-                //Process Query string parameter
-                if(jobj["input"] != nullptr && jobj["input"].is_object() && jobj["input"]["grievanceinfo"] != nullptr && jobj["input"]["grievanceinfo"].is_object()) {
-                    //Create Grievance for a given user.
-                }
-            } else {
-                std::cout << __TIMESTAMP__ << " line " << __LINE__ << " action not supported yet" << std::endl;
-            }
+        if(response.length()) {
+            jobj["result"] = "failure";
+            jobj["statuscode"] = 500;
         }
-    } else if(!http.uri().compare(0, 15, "/api/v1/db/exec")) {
-        return(buildHttpRedirectResponse(http));
+
+        return(buildHttpResponseOK(http, jobj.dump(), "application/json"));
+
+    } else if(!http.uri().compare(0, 17, "/api/v1/grievance")) {
+
+    } else if(!http.uri().compare(0, 11, "/api/v1/pta")) {
+
+    } else if(!http.uri().compare(0, 14, "/api/v1/report")) {
     } else {
 
     }
-
     return(std::string());
 }
 

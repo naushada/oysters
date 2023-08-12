@@ -68,7 +68,7 @@ export class HttpService {
       uri = "/api/v1/account";
     }
     
-    return this.http.post<IStatus>(uri, JSON.stringify(accountinfo), this.httpOptions);
+    return this.http.post<IStatus>(uri, accountinfo, this.httpOptions);
   }
 
   createaccounts(accountinfo: Array<string>): Observable<IStatus> {

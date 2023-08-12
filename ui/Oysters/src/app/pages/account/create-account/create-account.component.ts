@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpService } from 'src/app/core/http.service';
-import { Role, Country, State, City } from '../../../core/common';
+import { Role, Country, State, City, IStatus } from '../../../core/common';
 
 @Component({
   selector: 'app-create-account',
@@ -44,5 +44,52 @@ export class CreateAccountComponent {
 
   onSubmit() {
 
+    let request = {
+      "personalinfo": {
+        "name":           this.createaccountForm.value.username,
+        "dob":            this.createaccountForm.value.dob,
+        "grade":          this.createaccountForm.value.grade,
+        "section":        this.createaccountForm.value.section,
+        "rollnumber":     this.createaccountForm.value.rollnumber,
+        "academicyear":   this.createaccountForm.value.academicyear,
+        "dateofadmision": this.createaccountForm.value.dateofadmision,
+        "fathername":     this.createaccountForm.value.fathername,
+        "mothername":     this.createaccountForm.value.mothername
+      },
+      "address": {
+        "address":        this.createaccountForm.value.address,
+        "pincode":        this.createaccountForm.value.pincode,
+        "city":           this.createaccountForm.value.city,
+        "state":          this.createaccountForm.value.state,
+        "country":        this.createaccountForm.value.country
+      },
+      "logininfo": {
+        "userid": (this.createaccountForm.value.username).replaceAll(' ', '.') ,
+        "password":       this.createaccountForm.value.password,
+        "role": []
+      },
+      "contactinfo": {
+        "emails": (this.createaccountForm.value.emailid).split(',') ,
+        "cellnumbers": (this.createaccountForm.value.emailid).split(',')
+      },
+      "academichistory" : [
+        {
+          "grade":          this.createaccountForm.value.grade,
+          "section":        this.createaccountForm.value.section,
+          "rollnumber":     this.createaccountForm.value.rollnumber,
+          "academinyear":   this.createaccountForm.value.academicyear
+        }
+      ]
+    }
+
+    this.http.createaccount(JSON.stringify(request)).subscribe((response: IStatus) => {
+        console.log(response);
+        console.log(response.ip);
+        console.log(response.reason);
+        console.log(response.result);
+        console.log(response.ts);
+      },
+      (error) => {},
+      () => {});
   }
 }
