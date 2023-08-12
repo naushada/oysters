@@ -1850,14 +1850,24 @@ std::int32_t noor::Service::web_rx(std::int32_t channel, std::string& data) {
             std::cout << "function: "<< __FUNCTION__ << " line: " << __LINE__ <<" value of Content-Length " << cl << std::endl;
             payload_len = std::stoi(cl) + http.header().length();
             std::cout << "line: " << __LINE__ << " payload_len: " << payload_len << " len: " << len << " header_len: " << http.header().length() << std::endl;
+            std::stringstream ss;
+            size_t offset = 0;
+            do {
+                req.assign("");
+                len = tcp_rx(channel, req, payload_len - offset);
+                if(len <= 0) {
+                    return(0);
+                }
+
+                ss << req;
+                offset += len;
+            } while(offset != payload_len);
+
             if(len == payload_len) {
                 //We have received the full HTTP packet
-                len = tcp_rx(channel, req, payload_len);
-                if(len > 0) {
-                    data.assign(req);
-                }
-                return(data.length());
+                data.assign(ss.str());
             }
+            return(data.length());
         }
     }
     return(0);
