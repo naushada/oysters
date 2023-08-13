@@ -1665,7 +1665,6 @@ std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
                 }
             }
             auto response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
-            std::cout << "line: " << __LINE__ << " fn: " << __PRETTY_FUNCTION__ << " response: " << response << std::endl;
             return(buildHttpResponseOK(http, response, "application/json"));
         }
 
