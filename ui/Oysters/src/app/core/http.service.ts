@@ -44,25 +44,19 @@ export class HttpService {
 
 
   getaccountsinfo(grade?: string, section?: string): Observable<Array<IAccountInfo>> {
-    let payload = {}
+    let param = "";
+
     if(grade && grade?.length > 0 && section && section?.length > 0) {
-      payload = {
-        "garde": grade,
-        "section": section
-      };
+      param = `grade=${grade}&section=${section}`;
     } else {
       if(grade && grade.length > 0) {
         //section is absent 
-        payload = {
-          "grade": grade,
-          "section": "all"
-        };
-      } else {
+        param = `grade=${grade}&section=all`;
+      } else if(section && section.length > 0) {
         //grade is absent
-        payload = {
-          "grade": "all",
-          "section": section
-        };
+        param = `grade=all&section=${section}`;
+      } else {
+        param = `grade=all&section=all`;
       }
     }
 
@@ -73,7 +67,8 @@ export class HttpService {
       uri = "/api/v1/account";
     }
     
-    return this.http.post<Array<IAccountInfo>>(uri, JSON.stringify(payload), this.httpOptions);
+    const options = {params: new HttpParams({fromString: param})};
+    return this.http.get<Array<IAccountInfo>>(uri, options);
   }
 
   createaccount(accountinfo: string): Observable<IStatus> {

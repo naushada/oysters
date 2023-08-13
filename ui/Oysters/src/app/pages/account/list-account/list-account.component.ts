@@ -25,6 +25,7 @@ export class ListAccountComponent {
     this.http.getaccountsinfo(this.listaccountForm.value.garde, this.listaccountForm.value.section).subscribe((rsp: Array<IAccountInfo>) => {
       //Use the spread operator
       this.responses = {...rsp};
+      console.log(this.responses);
     },
     (error) => {
       alert("Unable to fetch the accounts details");
