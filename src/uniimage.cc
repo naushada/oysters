@@ -1637,26 +1637,36 @@ std::string noor::Service::handleOptionsMethod(Http& http) {
 
     return(http_header.str());
 }
-std::string noor::Service::handleGetMethod(Http& http) {
+std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
 
     std::stringstream ss("");
     if(!http.uri().compare(0, 15, "/api/v1/account")) {
-        auto jobj = json::parse(http.body());
-        if(jobj["action"] != nullptr) {
+        //QS value
+        std::string querydocument = "";
+        auto grade = http.value("grade");
+        auto section = http.value("section");
 
-            if(jobj["action"].is_string() && !jobj["action"].get<std::string>().compare(0, 7, "account")) {
-                //Process Query string parameter
-                if(jobj["input"] != nullptr && jobj["input"].is_object() && jobj["input"]["accountinfo"] != nullptr && jobj["input"]["accountinfo"].is_object()) {
-                    //get account info for a given user.
-                }
-            } else if(jobj["action"].is_string() && !jobj["action"].get<std::string>().compare(0, 9, "grievance")) {
-                //Process Query string parameter
-                if(jobj["input"] != nullptr && jobj["input"].is_object() && jobj["input"]["grievanceinfo"] != nullptr && jobj["input"]["grievanceinfo"].is_object()) {
-                    //get grievances info.
-                }
+        if(grade.length() > 0 && section.length() > 0) {
+            auto projection = json::object();
+            projection["_id"] = false;
+            auto collectionname = "account";
+            auto filter = json::object();
+
+            if(!grade.compare(0, 3, "all") && !section.compare(0,3, "all")) {
+                //Get All Account Documents fron Account Collection
             } else {
-                std::cout << __TIMESTAMP__ << " line " << __LINE__ << " action not supported yet" << std::endl;
+                if(grade.compare(0, 3, "all")) {
+                    //grade is not all
+                    filter["personalinfo.grade"] = grade;
+                }
+                if(section.compare(0, 3, "all")) {
+                    //section is not all
+                    filter["personalinfo.section"] = section;
+                }
             }
+            auto response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
+            std::cout << "line: " << __LINE__ << " fn: " << __PRETTY_FUNCTION__ << " response: " << response << std::endl;
+            return(buildHttpResponseOK(http, response, "application/json"));
         }
 
     } else if(!http.uri().compare(0, 17, "/api/v1/grievance")) {
@@ -1774,7 +1784,7 @@ std::string noor::Service::process_web_request(const std::string& req, auto& dbi
     Http http(req);
 
     if(!http.method().compare("GET")) {
-        return(handleGetMethod(http));
+        return(handleGetMethod(http, dbinst));
     } else if(!http.method().compare("POST")) {
         return(handlePostMethod(http, dbinst));
     } else if(!http.method().compare("PUT")) {
