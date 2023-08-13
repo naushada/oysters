@@ -1,29 +1,94 @@
-<clr-datagrid>
+<form clrForm clrLayout="vertical" [formGroup]="listaccountForm" (ngSubmit)="onSubmit()">
+    <div class="clr-container">
+        <!-- First ROW -->
+        <div class="clr-row">
+            <!--element 1-->
+            <div class="clr-col-3 clr-col-lg" >
+                <clr-input-container>
+                    <label for="grade">Grade (Class)</label>
+                    <input clrInput name="grade" formControlName="grade" >
+                </clr-input-container>
+                <clr-control-helper>Leave Blank for all Grade</clr-control-helper>
+            </div>
+            <div class="clr-col-3 clr-col-lg">
+                <clr-input-container>
+                    <label for="section">Section</label>
+                    <input clrInput name="section" formControlName="section">
+                </clr-input-container>
+                <clr-control-helper>Leave Blank for all Section</clr-control-helper>
+            </div>
+            <div class="clr-col-3 clr-col-lg"></div>
+            <div class="clr-col-3 clr-col-lg"></div>
+        </div>
+    </div>
+    <div>
+        <cds-button class="btn btn-primary">Fetch Account Details</cds-button>
+    </div>
+</form>
+
+<ng-container *ngIf="responses && responses.length > 0">
+<clr-datagrid [(clrDgSelected)]="selected">
+    <clr-dg-column>Academic Year</clr-dg-column>
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
-    <clr-dg-column>Email Address</clr-dg-column>
-    <clr-dg-column>Cell Number</clr-dg-column>
+    <clr-dg-column>Grade (Class)</clr-dg-column>
+    <clr-dg-column>Section </clr-dg-column>
+    <clr-dg-column>Cell Number (Mobile Number) </clr-dg-column>
     <clr-dg-column>Address</clr-dg-column>
+    <clr-dg-column>Pin (Postal) Code </clr-dg-column>
     <clr-dg-column>City</clr-dg-column>
     <clr-dg-column>State</clr-dg-column>
     <clr-dg-column>Country</clr-dg-column>
+    
 
-    <clr-dg-row>
-        <clr-dg-cell></clr-dg-cell>
-        <clr-dg-cell></clr-dg-cell>
-        <clr-dg-cell></clr-dg-cell>
-        <clr-dg-cell></clr-dg-cell>
-        <clr-dg-cell></clr-dg-cell>
-        <clr-dg-cell></clr-dg-cell>
-        <clr-dg-cell></clr-dg-cell>
-        <clr-dg-cell></clr-dg-cell>
+    <clr-dg-row *clrDgItems="let response of responses" [clrDgItem]="response">
+        <clr-dg-cell>{{response.personalinfo.academicyear}}</clr-dg-cell>
+        <clr-dg-cell>{{response.logininfo.userid}}</clr-dg-cell>
+        <clr-dg-cell>{{response.personalinfo.name}}</clr-dg-cell>
+        <clr-dg-cell>{{response.personalinfo.grade}}</clr-dg-cell>
+        <clr-dg-cell>{{response.personalinfo.section}}</clr-dg-cell>
+        <clr-dg-cell>{{response.contactinfo.cellnumbers}}</clr-dg-cell>
+        <clr-dg-cell>{{response.addressinfo.address}}</clr-dg-cell>
+        <clr-dg-cell>{{response.addressinfo.pincode}}</clr-dg-cell>
+        <clr-dg-cell>{{response.addressinfo.city}}</clr-dg-cell>
+        <clr-dg-cell>{{response.addressinfo.state}}</clr-dg-cell>
+        <clr-dg-cell>{{response.addressinfo.country}}</clr-dg-cell>
         
     </clr-dg-row>
+
     <clr-dg-footer>
-		<clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "10">
+		<clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "responses.length">
 			<clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Account per page</clr-dg-page-size>
         {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
         of {{pagination.totalItems}} Account
         </clr-dg-pagination>
     </clr-dg-footer>
+
+
+    <clr-dg-detail *clrIfDetail="let response">
+        <clr-dg-detail-header>Academic History</clr-dg-detail-header>
+        <clr-dg-detail-body>
+            <clr-datagrid>
+                <clr-dg-column>Grade</clr-dg-column>
+                <clr-dg-column>Section</clr-dg-column>
+                <clr-dg-column>Roll Number</clr-dg-column>
+                <clr-dg-column>Academic Year</clr-dg-column>
+
+                <clr-dg-row *clrDgItems="let ent of response.academichistoryinfo" [clrDgItem]="ent">
+                    <clr-dg-cell>{{ent.grade}}</clr-dg-cell>
+                    <clr-dg-cell>{{ent.section}}</clr-dg-cell>
+                    <clr-dg-cell>{{ent.rollnumber}}</clr-dg-cell>
+                    <clr-dg-cell>{{ent.academicyear}}</clr-dg-cell>
+                </clr-dg-row>
+                <clr-dg-footer>
+                    <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "response.academichistoryinfo.length">
+                        <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Academic History per page</clr-dg-page-size>
+                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Academic History
+                    </clr-dg-pagination>
+                </clr-dg-footer>
+            </clr-datagrid>
+        </clr-dg-detail-body>
+    </clr-dg-detail>
+
 </clr-datagrid>
+</ng-container>

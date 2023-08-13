@@ -43,17 +43,34 @@ export class HttpService {
   }
 
 
-  getaccountsinfo(username:string): Observable<Array<IAccountInfo>> {
-
-    let payload = {
-      "username": `${username}`,
-    };
+  getaccountsinfo(grade?: string, section?: string): Observable<Array<IAccountInfo>> {
+    let payload = {}
+    if(grade && grade?.length > 0 && section && section?.length > 0) {
+      payload = {
+        "garde": grade,
+        "section": section
+      };
+    } else {
+      if(grade && grade.length > 0) {
+        //section is absent 
+        payload = {
+          "grade": grade,
+          "section": "all"
+        };
+      } else {
+        //grade is absent
+        payload = {
+          "grade": "all",
+          "section": section
+        };
+      }
+    }
 
     let uri: string = "";
     if(this.apiURL.length > 0) {
-      uri = this.apiURL + "/api/v1/users/info";
+      uri = this.apiURL + "/api/v1/account";
     } else {
-      uri = "/api/v1/users/info";
+      uri = "/api/v1/account";
     }
     
     return this.http.post<Array<IAccountInfo>>(uri, JSON.stringify(payload), this.httpOptions);

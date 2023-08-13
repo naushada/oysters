@@ -73,7 +73,7 @@ Request:
 		"fathername": "",
 		"mothername": ""
 	},
-	"address": {
+	"addressinfo": {
 		"address": "",
 		"pincode": ,
 		"city": "",
@@ -89,7 +89,7 @@ Request:
 		"emails": [],
 		"cellnumbers": []
 	},
-	"academichistory" : [
+	"academichistoryinfo" : [
 		{
 			"grade": "",
 			"section": "",
