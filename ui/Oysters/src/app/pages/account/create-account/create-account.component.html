@@ -3,11 +3,12 @@
         <!-- First ROW -->
         <div class="clr-row">
             <!--element 1-->
-            <div class="clr-col-3 clr-col-lg">
+            <div class="clr-col-3 clr-col-lg" >
                 <clr-input-container>
                     <label for="userid">User ID</label>
-                    <input clrInput name="userid" formControlName="userid">
+                    <input clrInput name="userid" formControlName="userid" >
                 </clr-input-container>
+                <clr-control-helper>User id is system generated</clr-control-helper>
             </div>
             <div class="clr-col-3 clr-col-lg">
                 <clr-input-container>
@@ -58,7 +59,7 @@
             <!-- Third ROW -->
             <div class="clr-col-3 clr-col-lg">
                 <clr-textarea-container>
-                    <label>Address</label>
+                    <label for="address">Address</label>
                     <textarea clrTextarea name="address" formControlName="address"></textarea>
                 </clr-textarea-container>
             </div>
@@ -124,7 +125,7 @@
                 <clr-checkbox-container >
                     <label>Role</label>
                     <clr-checkbox-wrapper *ngFor="let role of roles">
-                        <input type="checkbox" clrCheckbox name="role|lowercase" value="role|lowercase" formControlName="role" />
+                        <input type="checkbox" clrCheckbox name="role|lowercase" [value]="role|lowercase" formControlName="role" (change)="onSelect($event,role)"/>
                         <label>{{role}}</label>
                     </clr-checkbox-wrapper>
                 </clr-checkbox-container>

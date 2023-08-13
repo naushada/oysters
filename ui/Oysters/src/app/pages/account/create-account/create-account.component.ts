@@ -14,7 +14,7 @@ export class CreateAccountComponent {
   countries = Country;
   cities = City;
   states = State;
-
+  useridDisabled: boolean = false;
   createaccountForm:FormGroup;
   constructor(private fb:FormBuilder, private http:HttpService) {
 
@@ -27,12 +27,13 @@ export class CreateAccountComponent {
       section: '',
       rollnumber:'',
       academicyear:'',
+      address: '',
       pincode:'',
       cityname:this.cities.at(0),
       statename: this.states.at(0),
       countryname: this.countries.at(0),
       aadhaarnumber:'',
-      role: '',
+      role: fb.array([]),
       emailid: '',
       cellnumber:'',
       dateofadmision:'',
@@ -40,6 +41,19 @@ export class CreateAccountComponent {
       mothername:''
 
     });
+  }
+
+  onSelect(event:any, role:string) {
+    if (event.target.checked) {
+      this.createaccountForm.value.role.push(role);
+    } else {
+      //getrid of this from role array
+      let isPresent = this.createaccountForm.value.role.find((x:string) => x == role);
+      if(isPresent != -1) {
+        this.createaccountForm.value.role.splice(isPresent, 1);
+      }
+    } 
+
   }
 
   onSubmit() {
@@ -59,14 +73,14 @@ export class CreateAccountComponent {
       "addressinfo": {
         "address":        this.createaccountForm.value.address,
         "pincode":        this.createaccountForm.value.pincode,
-        "city":           this.createaccountForm.value.city,
-        "state":          this.createaccountForm.value.state,
-        "country":        this.createaccountForm.value.country
+        "city":           this.createaccountForm.value.cityname,
+        "state":          this.createaccountForm.value.statename,
+        "country":        this.createaccountForm.value.countryname
       },
       "logininfo": {
         "userid":         (this.createaccountForm.value.username).replaceAll(' ', '.').toLowerCase() ,
         "password":       this.createaccountForm.value.password,
-        "role": []
+        "role":           this.createaccountForm.value.role
       },
       "contactinfo": {
         "emails": (this.createaccountForm.value.emailid).split(',') ,
