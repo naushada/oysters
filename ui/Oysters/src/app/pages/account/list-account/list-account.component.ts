@@ -11,9 +11,9 @@ import { HttpService } from 'src/app/core/http.service';
 export class ListAccountComponent {
 
   listaccountForm: FormGroup;
-  responses?:Array<IAccountInfo>;
-  selected:any = "";
-  
+  responses:IAccountInfo[] = <IAccountInfo[]>[{}];
+  selected:any;
+  display:boolean = false;
   constructor(private fb: FormBuilder, private http: HttpService) {
     this.listaccountForm = fb.group({
       grade: '',
@@ -23,9 +23,9 @@ export class ListAccountComponent {
 
   onSubmit() {
     this.http.getaccountsinfo(this.listaccountForm.value.garde, this.listaccountForm.value.section).subscribe((rsp: Array<IAccountInfo>) => {
-      //Use the spread operator
-      this.responses = {...rsp};
-      console.log(this.responses);
+      this.responses.length = 0;
+      rsp.forEach(ent => this.responses.push(ent));
+      this.display = true;
     },
     (error) => {
       alert("Unable to fetch the accounts details");
