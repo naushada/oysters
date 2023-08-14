@@ -36,6 +36,11 @@ export interface IAccountInfo {
 	]
 };
 
+export interface IEventData {
+    id: string;
+    document: string;
+};
+
 export interface IMember {
     grade: string;
     name: string;

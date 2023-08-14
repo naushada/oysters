@@ -27,6 +27,7 @@
       </ul>
     </nav>
     <div [ngSwitch]="selectedItem">
+      
       <app-vnavbar-account *ngSwitchCase="'Account'"></app-vnavbar-account>
       <app-gvnabbar *ngSwitchCase="'Grievances'"></app-gvnabbar>
       <app-pta-main *ngSwitchCase="'PTA'"></app-pta-main>

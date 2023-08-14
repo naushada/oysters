@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription,filter,map } from 'rxjs';
 import { SubSink } from 'subsink';
+import { IEventData } from './common';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { SubSink } from 'subsink';
 export class EventsService implements OnDestroy {
 
   private subsink = new SubSink();
-  private bs$: BehaviorSubject<{id:string, document:string}> = new BehaviorSubject<{id:string, document:string}>({id:"nil", document:"nil"});
+  private evtData:IEventData = <IEventData>{id: "", document: ""};
+  private bs$: BehaviorSubject<{id:string, document:string}> = new BehaviorSubject<IEventData>(this.evtData);
 
   /**
    * Event to be published.
@@ -33,6 +35,7 @@ export class EventsService implements OnDestroy {
    * @param event 
    */
   public publish(event: {id:string, document:string}) {
+    this.evtData = event;
     this.bs$.next(event);
   }
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { subnavbarMap } from 'src/app/core/common';
+import { IAccountInfo, subnavbarMap } from 'src/app/core/common';
 import { EventsService } from 'src/app/core/events.service';
 
 @Component({
@@ -9,13 +9,35 @@ import { EventsService } from 'src/app/core/events.service';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent {
+
+  accountInfo:IAccountInfo = <IAccountInfo>{};
   menubar = subnavbarMap;
   selectedItem:string = "Grievances";
+
   constructor(private evt: EventsService, private rt:Router) {
-    evt.subscribe("user.login", this.eventHandler);
+    evt.subscribe("user.login", (id:string, document:string) => {
+      if(id == "user.login") {
+        let response = JSON.parse(JSON.stringify(document));
+        this.accountInfo = <IAccountInfo>(response);
+        if(this.accountInfo) {
+          console.log(this.accountInfo);
+        } else {
+          console.log("accountInfo is empty");
+        }
+      }
+    });
   }
 
+  isDisabled(menuItem: string) {
+    let role = this.menubar.get(menuItem);
+    if(role?.length == 1 && role.at(0) == "*") {
+      console.log("Returning true");
+      return(true);
+    }
 
+    let isPresent = this.accountInfo.logininfo.role.forEach(ent => role?.includes(ent));
+    return(isPresent);
+  }
   /**
    * 
    * @param id 
@@ -25,13 +47,26 @@ export class MainComponent {
   public eventHandler(id:string, document: string) {
     console.log("Events: " + id);
     if(id == "user.login") {
-      alert("event is user.login: " + id + " document: " + document);
+      let response = JSON.parse(JSON.stringify(document));
+      this.accountInfo = <IAccountInfo>(response);
+      if(this.accountInfo) {
+        console.log(this.accountInfo);
+      } else {
+        console.log("accountInfo is empty");
+      }
+      //console.log(response);
+      //this.accountInfo.personalinfo = response.personalinfo;
+      //this.accountInfo.addressinfo = response.addressinfo;
+      //this.accountInfo.contactinfo = response.contactinfo;
+      //this.accountInfo.logininfo = response.logininfo;
+      //this.accountInfo.academichistoryinfo = response.academichistoryinfo;
+      //alert("Naushad: ");
+      //alert(this.accountInfo);
       this.selectedItem = "Grievances";
-      //this.rt.navigateByUrl('/main');
     }
-    //alert(id);
+
     //Process event posted by other component.
-    return({id, document});
+    //return({id, document});
   }
 
   onClick(item: string) {
