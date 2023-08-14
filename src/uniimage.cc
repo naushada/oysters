@@ -1641,16 +1641,17 @@ std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
 
     std::stringstream ss("");
     if(!http.uri().compare(0, 15, "/api/v1/account")) {
+        auto projection = json::object();
+        projection["_id"] = false;
+        auto collectionname = "account";
+        auto filter = json::object();
         //QS value
         std::string querydocument = "";
         auto grade = http.value("grade");
         auto section = http.value("section");
 
         if(grade.length() > 0 && section.length() > 0) {
-            auto projection = json::object();
-            projection["_id"] = false;
-            auto collectionname = "account";
-            auto filter = json::object();
+            
 
             if(!grade.compare(0, 3, "all") && !section.compare(0,3, "all")) {
                 //Get All Account Documents fron Account Collection
@@ -1665,6 +1666,16 @@ std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
                 }
             }
             auto response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
+            return(buildHttpResponseOK(http, response, "application/json"));
+        }
+
+        auto userid = http.value("userid");
+        auto password = http.value("password");
+
+        if(userid.length() && password.length()) {
+            filter["logininfo.userid"] = userid;
+            filter["logininfo.password"] = password;
+            auto response = dbinst.get_documentEx(collectionname, filter.dump(), projection.dump());
             return(buildHttpResponseOK(http, response, "application/json"));
         }
 

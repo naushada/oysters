@@ -25,6 +25,27 @@ export class HttpService {
     })
   }
 
+
+  getlogininfo(id:string, pwd: string): Observable<IAccountInfo> {
+
+    let param = "";
+
+    if(id.length > 0 && pwd.length > 0) {
+      param = `userid=${id}&password=${pwd}`;
+    }
+
+    let uri: string = "";
+    if(this.apiURL.length > 0) {
+      uri = this.apiURL + "/api/v1/account";
+    } else {
+      uri = "/api/v1/account";
+    }
+
+    const options = {params: new HttpParams({fromString: param})};
+    return this.http.get<IAccountInfo>(uri, options);
+  }
+
+
   getaccountinfo(id:string, pwd: string): Observable<IAccountInfo> {
 
     let payload = {

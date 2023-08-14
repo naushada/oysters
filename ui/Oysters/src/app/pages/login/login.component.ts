@@ -29,19 +29,23 @@ export class LoginComponent {
   }
 
   onLogin() {
-    console.log(this.username);
-    console.log(this.password);
-    this.rt.navigateByUrl('/main');
-    //this.event.publish({id: "user.login", document: "{\"a\": 10}"});
-    /*
-    this.http.getaccountinfo(this.username, this.password).subscribe((accountinfo:IAccountInfo) => {
+
+    if(!this.username.length || !this.password.length) {
+      alert("User ID or Password Can't be Empty");
+    }
+    
+    this.http.getlogininfo(this.username, this.password).subscribe((accountinfo:IAccountInfo) => {
       let id:string = "user.login";
       let document: string = JSON.stringify(accountinfo);
       this.event.publish({id, document});
+      this.rt.navigateByUrl('/main');
     },
-    (error) => {},
+    (error) => {
+      alert("Invalid Credentials");
+    },
     () => {
 
-    });*/
+    });
+
   }
 }
