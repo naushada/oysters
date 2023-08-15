@@ -36,7 +36,7 @@ export class CreatePtaComponent {
     }]};
     
     this.http.createptainfo(JSON.stringify(request)).subscribe((response: IStatus) => {
-      alert(response);
+      alert("Account Created Successfully");
     },
     (error) => {},
     () => {});

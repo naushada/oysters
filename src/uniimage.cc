@@ -1775,6 +1775,41 @@ std::string noor::Service::handlePostMethod(Http& http, auto& dbinst) {
     } else if(!http.uri().compare(0, 17, "/api/v1/grievance")) {
 
     } else if(!http.uri().compare(0, 11, "/api/v1/pta")) {
+        //Create PTA Account 
+        auto body = json::parse(http.body());
+        auto projection = json::object();
+        projection["_id"] = false;
+        auto collectionname = "pta";
+        auto filter = json::object();
+        //QS value
+        auto querydocument = json::object();
+
+        filter["academicyear"] = body["academicyear"];
+        auto response = dbinst.get_document(collectionname, filter.dump(), projection.dump());
+
+        if(!response.length()) {
+            response = dbinst.create_documentEx(collectionname, http.body());
+        } else {
+            //update the document.
+            std::stringstream document;
+            document << "{\"$push\": {\"ptas\": "  << body["ptas"][0] << "}}";
+            response = dbinst.update_collection(collectionname, filter.dump(), document.str());
+        }
+
+        std::cout << "line: " << __LINE__ << " response: " << response << std::endl;
+        auto jobj = json::object();
+        jobj["result"] = "success";
+        jobj["reason"] = "";
+        jobj["statuscode"] = 200;
+        jobj["ts"] = "";
+        jobj["ip"] = http.value("X-Forwarded-For");
+
+        if(!response.length()) {
+            jobj["result"] = "failure";
+            jobj["statuscode"] = 500;
+        }
+
+        return(buildHttpResponseOK(http, jobj.dump(), "application/json"));
 
     } else if(!http.uri().compare(0, 14, "/api/v1/report")) {
     } else {
