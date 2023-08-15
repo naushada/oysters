@@ -31,7 +31,7 @@ export interface IAccountInfo {
 			"grade": string;
 			"section":string;
 			"rollnumber": string;
-			"academinyear": string;
+			"academicyear": string;
 		}
 	]
 };

@@ -91,7 +91,7 @@ export class CreateAccountComponent {
           "grade":          this.createaccountForm.value.grade,
           "section":        this.createaccountForm.value.section,
           "rollnumber":     this.createaccountForm.value.rollnumber,
-          "academinyear":   this.createaccountForm.value.academicyear
+          "academicyear":   this.createaccountForm.value.academicyear
         }
       ]
     }
