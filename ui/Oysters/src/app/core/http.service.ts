@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpHeaderResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAccountInfo, IStatus } from './common';
+import { IAccountInfo, IPTA, IStatus } from './common';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
@@ -63,6 +63,30 @@ export class HttpService {
     return this.http.post<IAccountInfo>(uri, JSON.stringify(payload), this.httpOptions);
   }
 
+  getptainfo(): Observable<Array<IPTA>> {
+
+    let uri: string = "";
+    if(this.apiURL.length > 0) {
+      uri = this.apiURL + "/api/v1/pta";
+    } else {
+      uri = "/api/v1/pta";
+    }
+    
+    const options = {params: new HttpParams({})};
+    return this.http.get<Array<IPTA>>(uri, options);
+  }
+
+  createptainfo(request:string) : Observable<IStatus> {
+
+    let uri: string = "";
+    if(this.apiURL.length > 0) {
+      uri = this.apiURL + "/api/v1/pta";
+    } else {
+      uri = "/api/v1/pta";
+    }
+    
+    return this.http.post<IStatus>(uri, request, this.httpOptions);
+  }
 
   getaccountsinfo(grade?: string, section?: string): Observable<Array<IAccountInfo>> {
     let param = "";

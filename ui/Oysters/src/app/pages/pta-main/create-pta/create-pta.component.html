@@ -1,0 +1,57 @@
+<form clrForm clrLayout="vertical" [formGroup]="createptaForm" (ngSubmit)="onSubmit()">
+    <div class="clr-container">
+        <!-- First ROW -->
+        <div class="clr-row">
+            <!--element 1-->
+            <div class="clr-col-3 clr-col-lg" >
+                <clr-input-container>
+                    <label for="userid">User ID</label>
+                    <input clrInput name="userid" formControlName="userid" >
+                </clr-input-container>
+                <clr-control-helper>User id is system generated</clr-control-helper>
+            </div>
+            <div class="clr-col-3 clr-col-lg">
+                <clr-input-container>
+                    <label for="password">Password</label>
+                    <input clrInput name="password" formControlName="password">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-3 clr-col-lg">
+                <clr-input-container>
+                    <label for="username">Name</label>
+                    <input clrInput name="username" formControlName="username">
+                </clr-input-container>
+            </div>
+            <div class="w-100"></div>
+            <!--element 1-->
+            <div class="clr-col-3 clr-col-lg">
+                <clr-input-container>
+                    <label for="grade">Grade</label>
+                    <input clrInput name="grade" formControlName="grade">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-3 clr-col-lg">
+                <clr-input-container>
+                    <label for="academicyear">Academic Year</label>
+                    <input clrInput name="academicyear" formControlName="academicyear">
+                </clr-input-container>
+            </div>
+            <div class="clr-col-3 clr-col-lg">
+                <clr-input-container>
+                    <label>Email ID(s)</label>
+                    <input clrInput name="emailid" formControlName="emailid">
+                </clr-input-container>
+            </div>
+            <div class="w-100"></div>
+            <div class="clr-col-3 clr-col-lg">
+                <clr-input-container>
+                    <label>Cell Number(s)</label>
+                    <input clrInput name="cellnumber" formControlName="cellnumber">
+                </clr-input-container>
+            </div>
+        </div>
+    </div>
+    <div>
+        <cds-button class="btn btn-primary">Create PTA Account</cds-button>
+    </div>
+</form>

@@ -42,16 +42,19 @@ export interface IEventData {
 };
 
 export interface IMember {
+    userid: string;
+    password: string;
     grade: string;
     name: string;
-    cellnumber:string;
+    cellnumber: string;
     //Member/Secretary/Teacher
     role: string;
+    emailid: string;
 };
 
 export interface IPTA {
-    academic_year: string;
-    pta: Array<IMember>;
+    academicyear: string;
+    ptas: Array<IMember>;
 };
 
 

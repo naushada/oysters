@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IPTA } from 'src/app/core/common';
+import { HttpService } from 'src/app/core/http.service';
 
 @Component({
   selector: 'app-list-pta',
   templateUrl: './list-pta.component.html',
   styleUrls: ['./list-pta.component.scss']
 })
-export class ListPtaComponent {
+export class ListPtaComponent implements OnInit {
 
   selected:any = "";
   year:Date = new Date();
-  ptas: Array<IPTA> = [{"academic_year": "2023-2024", "pta": 
+  ptas: Array<IPTA> = [];
+  /*[{"academicyear": "2023-2024", "ptas": 
   [
     {"grade": "Grade 1", "name": "ABD", "cellnumber": "1234567891", "role": "Member"},
     {"grade": "Grade 2", "name": "XYZ", "cellnumber": "", "role": ""},
@@ -26,7 +28,7 @@ export class ListPtaComponent {
     {"grade": "Grade 10", "name": "", "cellnumber": "", "role": ""},
     {"grade": "Grade 10", "name": "", "cellnumber": "", "role": ""},
     {"grade": "Grade 11", "name": "", "cellnumber": "", "role": ""}]},
-    {"academic_year": "2024-2025", "pta": [{"grade": "Grade 1", "name": "ABD", "cellnumber": "1234567891", "role": "Member"},
+    {"academicyear": "2024-2025", "ptas": [{"grade": "Grade 1", "name": "ABD", "cellnumber": "1234567891", "role": "Member"},
     {"grade": "Grade 2", "name": "XYZ", "cellnumber": "", "role": ""},
     {"grade": "Grade 3", "name": "UVW", "cellnumber": "", "role": ""},
     {"grade": "Grade 4", "name": "", "cellnumber": "", "role": ""},
@@ -40,12 +42,20 @@ export class ListPtaComponent {
     {"grade": "Grade 10", "name": "", "cellnumber": "", "role": ""},
     {"grade": "Grade 10", "name": "", "cellnumber": "", "role": ""},
     {"grade": "Grade 11", "name": "", "cellnumber": "", "role": ""}]}
-]
+]*/
 
-  constructor() {
+  constructor(private http: HttpService) {
   
   }
 
-  
+  ngOnInit(): void {
+    this.http.getptainfo().subscribe((response: Array<IPTA>) => {
+      response.forEach(ent => this.ptas.push(ent));
+      console.log(response);
+      alert(response);
+    },
+    (error) => {},
+    () => {})
+  }
     
 }

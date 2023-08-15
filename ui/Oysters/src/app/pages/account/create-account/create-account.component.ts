@@ -97,11 +97,6 @@ export class CreateAccountComponent {
     }
 
     this.http.createaccount(JSON.stringify(request)).subscribe((response: IStatus) => {
-        console.log(response);
-        console.log(response.ip);
-        console.log(response.reason);
-        console.log(response.result);
-        console.log(response.ts);
         alert("Account Created Successfully");
         this.createaccountForm.reset('');
       },
