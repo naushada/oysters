@@ -1,11 +1,11 @@
 
 <clr-datagrid [(clrDgSelected)]="selected">
     <clr-dg-column>Year</clr-dg-column>
-    <clr-dg-row *clrDgItems="let ent of ptas" [clrDgItem]="ent">
+    <clr-dg-row *clrDgItems="let ent of response" [clrDgItem]="ent">
         <clr-dg-cell>{{ent.academicyear}}</clr-dg-cell>
     </clr-dg-row>
     <clr-dg-footer>
-		<clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "ptas.length">
+		<clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "response.length">
 			<clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Member per page</clr-dg-page-size>
         {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
         of {{pagination.totalItems}} Member
@@ -21,14 +21,14 @@
                 <clr-dg-column>Role</clr-dg-column>
                 <clr-dg-column>Cell Number</clr-dg-column>
             
-                <clr-dg-row *clrDgItems="let elm of ent.pta" [clrDgItem]="elm">
+                <clr-dg-row *clrDgItems="let elm of ent.ptas" [clrDgItem]="elm">
                     <clr-dg-cell>{{elm.grade}}</clr-dg-cell>
                     <clr-dg-cell>{{elm.name}}</clr-dg-cell>
                     <clr-dg-cell>{{elm.role}}</clr-dg-cell>
                     <clr-dg-cell>{{elm.cellnumber}}</clr-dg-cell>
                 </clr-dg-row>
                 <clr-dg-footer>
-                    <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "ent.pta.length">
+                    <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "ent.ptas.length">
                         <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Member per page</clr-dg-page-size>
                             {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Member
                     </clr-dg-pagination>

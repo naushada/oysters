@@ -11,7 +11,7 @@ export class ListPtaComponent implements OnInit {
 
   selected:any = "";
   year:Date = new Date();
-  ptas: Array<IPTA> = [];
+  response: Array<IPTA> = [];
   /*[{"academicyear": "2023-2024", "ptas": 
   [
     {"grade": "Grade 1", "name": "ABD", "cellnumber": "1234567891", "role": "Member"},
@@ -49,10 +49,10 @@ export class ListPtaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.getptainfo().subscribe((response: Array<IPTA>) => {
-      response.forEach(ent => this.ptas.push(ent));
-      console.log(response);
-      alert(response);
+    this.http.getptainfo().subscribe((rsp: Array<IPTA>) => {
+      this.response.length = 0;
+      rsp.forEach(ent => this.response.push(ent));
+      console.log(this.response);
     },
     (error) => {},
     () => {})

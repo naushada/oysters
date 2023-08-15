@@ -1682,7 +1682,13 @@ std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
     } else if(!http.uri().compare(0, 17, "/api/v1/grievance")) {
 
     } else if(!http.uri().compare(0, 11, "/api/v1/pta")) {
-
+        auto projection = json::object();
+        projection["_id"] = false;
+        auto collectionname = "pta";
+        auto filter = json::object();
+        auto response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
+        //std::cout << "line: " << __LINE__ << " response: " << response << std::endl;
+        return(buildHttpResponseOK(http, response, "application/json"));
     } else if(!http.uri().compare(0, 14, "/api/v1/report")) {
 
     } else if((!http.uri().compare(0, 7, "/webui/"))) {
