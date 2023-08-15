@@ -18,10 +18,9 @@ export class LogGrievanceComponent implements OnInit {
   constructor(private fb: FormBuilder, private http: HttpService, private evt:EventsService) {
     evt.subscribe("user.login", (id:string, document:string) => {
       if(id == "user.login") {
-        let response = JSON.parse(JSON.stringify(document));
-        this.accountInfo = <IAccountInfo>(response);
+        let response = JSON.parse(document);
+        this.accountInfo = {...response};
         this.userid = this.accountInfo.logininfo.userid;
-        console.log(this.accountInfo);
       }
     });
 
@@ -35,7 +34,7 @@ export class LogGrievanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loggrievanceForm.value.createdby = this.userid;
+    this.loggrievanceForm.get('createdby')?.setValue(this.userid);
   }
 
   onSubmit() {
