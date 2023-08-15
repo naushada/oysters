@@ -107,3 +107,21 @@ Response:
 	"ts": ,
 	"ip": ""
 }
+
+URI : /api/v1/pta
+Method: GET/POST/PUT
+Schema:
+{
+	"academicyear": string,
+	"ptas": [
+		{
+			"userid": string,
+			"username": string,
+			"role": string,
+			"grade": string,
+			"password": string,
+			"cellnumber": string,
+			"emailid": string
+		}
+	]
+}
