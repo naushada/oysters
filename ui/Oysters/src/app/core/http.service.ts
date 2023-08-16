@@ -140,4 +140,17 @@ export class HttpService {
     return this.http.post<IStatus>(uri, JSON.stringify(accountinfo), this.httpOptions);
   }
 
+  creategrievance(ticket:string): Observable<IStatus> {
+
+    let uri: string = "";
+    if(this.apiURL.length > 0) {
+      uri = this.apiURL + "/api/v1/grievance";
+    } else {
+      uri = "/api/v1/grievance";
+    }
+    
+    return this.http.post<IStatus>(uri, ticket, this.httpOptions);
+  }
+
+
 }
