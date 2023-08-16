@@ -62,7 +62,8 @@ export interface IStatus {
     "result": string, //Success/Failure
 	"reason": string, //When Status=Failure then this will be present
 	"ts": Date,
-	"ip": string
+	"ip": string,
+    "payload": string;
 }
 
 export const Role: Array<string>  = [

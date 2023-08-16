@@ -152,5 +152,24 @@ export class HttpService {
     return this.http.post<IStatus>(uri, ticket, this.httpOptions);
   }
 
+  getgrievanceinfo(userid?: string): Observable<Array<IAccountInfo>> {
+    let param = "";
+
+    if(userid && userid?.length > 0 ) {
+      param = `userid=${userid}`;
+    } else {
+      param = `userid=all`;
+    }
+
+    let uri: string = "";
+    if(this.apiURL.length > 0) {
+      uri = this.apiURL + "/api/v1/grievance";
+    } else {
+      uri = "/api/v1/grievance";
+    }
+    
+    const options = {params: new HttpParams({fromString: param})};
+    return this.http.get<Array<IAccountInfo>>(uri, options);
+  }
 
 }

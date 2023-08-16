@@ -43,17 +43,24 @@ export class LogGrievanceComponent implements OnInit {
     let request = {
       "grievanceid": 1,
       "tickets": [{
+        "ticketid": 1,
         "userid": this.userid,
         "grievancetype": this.loggrievanceForm.value.grievance,
         "createdon": this.loggrievanceForm.value.createdon,
         "priority": this.loggrievanceForm.value.priority,
-        "grievancedescription": this.loggrievanceForm.value.grievancedetails
+        "grievancedescription": this.loggrievanceForm.value.grievancedetails,
+        "resolution": "open",
+        "resolutiondetails": [{
+          "reason": "",
+          "updatedby": "",
+          "updatedon": ""
+        }]
       }]
     };
 
     this.http.creategrievance(JSON.stringify(request)).subscribe((rsp: IStatus) => {
       //console.log(rsp);
-      alert("Grievance is created successfully");
+      alert("Grievance is created successfully, ID: " + rsp.payload);
     },
     (error) => {
       alert("Grievance creation failed")

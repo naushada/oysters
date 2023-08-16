@@ -1680,6 +1680,26 @@ std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
         }
 
     } else if(!http.uri().compare(0, 17, "/api/v1/grievance")) {
+        //Retrieve the Grievance Tickets 
+        auto projection = json::object();
+        projection["_id"] = false;
+        auto collectionname = "grievance";
+        auto filter = json::object();
+        //QS value
+        std::string querydocument = "";
+        auto userid = http.value("userid");
+        std::string response = "";
+        if(userid.length() > 0) {
+            if(!userid.compare(0, 3, "all")) {
+                //Get All Account Documents fron grievance Collection
+                response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
+            } else {
+                filter["tickets.userid"] = userid;
+                response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
+            }
+            return(buildHttpResponseOK(http, response, "application/json"));
+        }
+        
 
     } else if(!http.uri().compare(0, 11, "/api/v1/pta")) {
         auto projection = json::object();
@@ -1793,15 +1813,20 @@ std::string noor::Service::handlePostMethod(Http& http, auto& dbinst) {
         auto querydocument = json::object();
         auto response = dbinst.get_document(collectionname, filter.dump(), projection.dump());
         std::cout << "line: " << __LINE__ << " response: " << response << std::endl;
+        std::uint32_t id = 0;
         if(!response.length()) {
             //No Grievance found.
             response = dbinst.create_documentEx(collectionname, http.body());
         } else  {
             //Got the grievvanceid iincreament it and create new grievance
+            auto data = json::parse(response);
+            id = data["grievanceid"];
+            id++;
             std::stringstream document;
             document << "{\"$inc\": {\"grievanceid\": " << 1 << "}}";
             response = dbinst.update_collection(collectionname, filter.dump(), document.str());
             document.str("");
+            body["tickets"][0]["ticketid"] = id;
             document << "{\"$push\": {\"tickets\": "  << body["tickets"][0] << "}}";
             response = dbinst.update_collection(collectionname, filter.dump(), document.str());
         }
@@ -1812,6 +1837,7 @@ std::string noor::Service::handlePostMethod(Http& http, auto& dbinst) {
         jobj["statuscode"] = 200;
         jobj["ts"] = "";
         jobj["ip"] = http.value("X-Forwarded-For");
+        jobj["payload"] = std::to_string(id);
 
         if(!response.length()) {
             jobj["result"] = "failure";
