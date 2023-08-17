@@ -152,7 +152,7 @@ export class HttpService {
     return this.http.post<IStatus>(uri, ticket, this.httpOptions);
   }
 
-  getgrievanceinfo(userid?: string): Observable<IGrievance> {
+  getgrievanceinfo(userid?: string): Observable<string> {
     let param = "";
 
     if(userid && userid?.length > 0 ) {
@@ -169,7 +169,7 @@ export class HttpService {
     }
     
     const options = {params: new HttpParams({fromString: param})};
-    return this.http.get<IGrievance>(uri, options);
+    return this.http.get<string>(uri, options);
   }
 
 }

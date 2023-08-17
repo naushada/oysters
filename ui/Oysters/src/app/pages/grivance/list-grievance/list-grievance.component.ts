@@ -9,14 +9,14 @@ import { HttpService } from 'src/app/core/http.service';
 })
 export class ListGrievanceComponent {
 
-  grievances: IGrievance = <IGrievance>{};
+  grievances: any;
+  
   constructor(private http: HttpService) {
-    http.getgrievanceinfo().subscribe((response: IGrievance) => {
-      this.grievances.tickets.length = 0;
-      this,this.grievances.grievanceid = response.grievanceid;
-      //this.grievances = {...response};
-      response.tickets.forEach(ent => {this.grievances.tickets.push(ent);});
+    http.getgrievanceinfo().subscribe((response: string) => {
+      //this.grievances.tickets.length = 0;
+      this.grievances = JSON.parse(JSON.stringify(response)) as IGrievance;
       console.log(this.grievances);
+      alert(this.grievances);
     });
   }
 }

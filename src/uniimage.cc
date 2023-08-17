@@ -1692,11 +1692,11 @@ std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
         if(userid.length() > 0) {
             if(!userid.compare(0, 3, "all")) {
                 //Get All Account Documents fron grievance Collection
-                response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
+                response = dbinst.get_documentEx(collectionname, filter.dump(), projection.dump());
                 std::cout << "line: " << __LINE__ << " response: "  << response << std::endl;
             } else {
                 filter["tickets.userid"] = userid;
-                response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
+                response = dbinst.get_documentEx(collectionname, filter.dump(), projection.dump());
                 std::cout << "line: " << __LINE__ << " response: "  << response << std::endl;
             }
             return(buildHttpResponseOK(http, response, "application/json"));

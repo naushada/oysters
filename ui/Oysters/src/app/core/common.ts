@@ -36,22 +36,26 @@ export interface IAccountInfo {
 	]
 };
 
+export interface IResolution {
+    "reason": string;
+    "updatedby": string;
+    "updatedon": string;
+};
+
+export interface ITickets {
+    "ticketid": number;
+    "userid": string;
+    "grievancetype": string;
+    "createdon": Date;
+    "priority": string;
+    "grievancedescription": string;
+    "resolution": string;
+    "resolutiondetails": Array<IResolution>;
+};
+
 export interface IGrievance {
     "grievanceid": number;
-    "tickets": Array<{
-    	"ticketid": number;
-        "userid": string;
-        "grievancetype": string;
-        "createdon": Date;
-        "priority": string;
-        "grievancedescription": string;
-        "resolution": string;
-        "resolutiondetails": Array<{
-          "reason": string;
-          "updatedby": string;
-          "updatedon": string;
-        }>
-    }>
+    "tickets": Array<ITickets>;
 };
 
 export interface IEventData {
