@@ -45,10 +45,10 @@ export class LogGrievanceComponent implements OnInit {
       "tickets": [{
         "ticketid": 1,
         "userid": this.userid,
-        "grievancetype": this.loggrievanceForm.value.grievance,
+        "grievancetype": this.loggrievanceForm.value.grievancetype,
         "createdon": this.loggrievanceForm.value.createdon,
         "priority": this.loggrievanceForm.value.priority,
-        "grievancedescription": this.loggrievanceForm.value.grievancedetails,
+        "grievancedescription": this.loggrievanceForm.value.grievancedescription,
         "resolution": "open",
         "resolutiondetails": [{
           "reason": "",
