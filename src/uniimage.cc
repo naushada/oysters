@@ -1693,9 +1693,11 @@ std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
             if(!userid.compare(0, 3, "all")) {
                 //Get All Account Documents fron grievance Collection
                 response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
+                std::cout << "line: " << __LINE__ << " response: "  << response << std::endl;
             } else {
                 filter["tickets.userid"] = userid;
                 response = dbinst.get_documentsEx(collectionname, filter.dump(), projection.dump());
+                std::cout << "line: " << __LINE__ << " response: "  << response << std::endl;
             }
             return(buildHttpResponseOK(http, response, "application/json"));
         }
@@ -1807,7 +1809,7 @@ std::string noor::Service::handlePostMethod(Http& http, auto& dbinst) {
         //Retrieve the current value of grievanceid
         projection["grievanceid"] = true;
 
-        auto collectionname = "greivance";
+        auto collectionname = "grievance";
         auto filter = json::object();
         //QS value
         auto querydocument = json::object();

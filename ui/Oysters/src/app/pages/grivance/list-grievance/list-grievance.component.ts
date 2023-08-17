@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { IGrievance } from 'src/app/core/common';
+import { HttpService } from 'src/app/core/http.service';
 
 @Component({
   selector: 'app-list-grievance',
@@ -7,7 +9,14 @@ import { Component } from '@angular/core';
 })
 export class ListGrievanceComponent {
 
-  constructor() {
-    
+  grievances: IGrievance = <IGrievance>{};
+  constructor(private http: HttpService) {
+    http.getgrievanceinfo().subscribe((response: IGrievance) => {
+      this.grievances.tickets.length = 0;
+      this,this.grievances.grievanceid = response.grievanceid;
+      //this.grievances = {...response};
+      response.tickets.forEach(ent => {this.grievances.tickets.push(ent);});
+      console.log(this.grievances);
+    });
   }
 }

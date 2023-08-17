@@ -36,6 +36,24 @@ export interface IAccountInfo {
 	]
 };
 
+export interface IGrievance {
+    "grievanceid": number;
+    "tickets": Array<{
+    	"ticketid": number;
+        "userid": string;
+        "grievancetype": string;
+        "createdon": Date;
+        "priority": string;
+        "grievancedescription": string;
+        "resolution": string;
+        "resolutiondetails": Array<{
+          "reason": string;
+          "updatedby": string;
+          "updatedon": string;
+        }>
+    }>
+};
+
 export interface IEventData {
     id: string;
     document: string;

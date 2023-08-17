@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpHeaderResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAccountInfo, IPTA, IStatus } from './common';
+import { IAccountInfo, IGrievance, IPTA, IStatus } from './common';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
@@ -152,7 +152,7 @@ export class HttpService {
     return this.http.post<IStatus>(uri, ticket, this.httpOptions);
   }
 
-  getgrievanceinfo(userid?: string): Observable<Array<IAccountInfo>> {
+  getgrievanceinfo(userid?: string): Observable<IGrievance> {
     let param = "";
 
     if(userid && userid?.length > 0 ) {
@@ -169,7 +169,7 @@ export class HttpService {
     }
     
     const options = {params: new HttpParams({fromString: param})};
-    return this.http.get<Array<IAccountInfo>>(uri, options);
+    return this.http.get<IGrievance>(uri, options);
   }
 
 }
