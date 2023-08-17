@@ -45,10 +45,10 @@ export class LogGrievanceComponent implements OnInit {
       "tickets": [{
         "ticketid": 1,
         "userid": this.userid,
-        "grievancetype": this.loggrievanceForm.value.grievancetype,
+        "grievancetype": this.loggrievanceForm.get('grievancetype')?.value,
         "createdon": this.loggrievanceForm.value.createdon,
         "priority": this.loggrievanceForm.value.priority,
-        "grievancedescription": this.loggrievanceForm.value.grievancedescription,
+        "grievancedescription": this.loggrievanceForm.get('grievancedescription')?.value,
         "resolution": "open",
         "resolutiondetails": [{
           "reason": "",
@@ -59,7 +59,7 @@ export class LogGrievanceComponent implements OnInit {
     };
 
     this.http.creategrievance(JSON.stringify(request)).subscribe((rsp: IStatus) => {
-      //console.log(rsp);
+      //console.log(JSON.stringify(request));
       alert("Grievance is created successfully, ID: " + rsp.payload);
     },
     (error) => {

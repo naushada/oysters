@@ -16,7 +16,7 @@ export class ListGrievanceComponent {
       //this.grievances.tickets.length = 0;
       this.grievances = JSON.parse(JSON.stringify(response)) as IGrievance;
       console.log(this.grievances);
-      alert(this.grievances);
+      //alert(this.grievances);
     });
   }
 }
