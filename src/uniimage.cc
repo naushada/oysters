@@ -1693,11 +1693,11 @@ std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
             if(!userid.compare(0, 3, "all")) {
                 //Get All Account Documents fron grievance Collection
                 response = dbinst.get_documentEx(collectionname, filter.dump(), projection.dump());
-                std::cout << "line: " << __LINE__ << " response: "  << response << std::endl;
+                //std::cout << "line: " << __LINE__ << " response: "  << response << std::endl;
             } else {
                 filter["tickets.userid"] = userid;
                 response = dbinst.get_documentEx(collectionname, filter.dump(), projection.dump());
-                std::cout << "line: " << __LINE__ << " response: "  << response << std::endl;
+                //std::cout << "line: " << __LINE__ << " response: "  << response << std::endl;
             }
             return(buildHttpResponseOK(http, response, "application/json"));
         }
@@ -1818,6 +1818,7 @@ std::string noor::Service::handlePostMethod(Http& http, auto& dbinst) {
         std::uint32_t id = 0;
         if(!response.length()) {
             //No Grievance found.
+            id = 1;
             response = dbinst.create_documentEx(collectionname, http.body());
         } else  {
             //Got the grievvanceid iincreament it and create new grievance
