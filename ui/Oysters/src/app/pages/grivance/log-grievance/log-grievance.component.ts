@@ -27,8 +27,8 @@ export class LogGrievanceComponent implements OnInit {
     });
 
     this.loggrievanceForm = fb.group({
-      grievance:'',
-      grievancedetails:'',
+      grievancetype:'',
+      grievancedescription:'',
       priority: this.priorities.at(2),
       createdon: [formatDate(new Date(Date.now()), 'dd/MM/yyyy', 'en-GB')],
       createdby: this.userid
