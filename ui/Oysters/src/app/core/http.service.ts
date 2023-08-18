@@ -172,4 +172,41 @@ export class HttpService {
     return this.http.get<string>(uri, options);
   }
 
+
+  getgrievanceinfobyticketid(ticketid: string): Observable<string> {
+    let param = "";
+    param = `ticketid=${ticketid}`;
+    
+    let uri: string = "";
+    if(this.apiURL.length > 0) {
+      uri = this.apiURL + "/api/v1/grievance";
+    } else {
+      uri = "/api/v1/grievance";
+    }
+    
+    const options = {params: new HttpParams({fromString: param})};
+    return this.http.get<string>(uri, options);
+  }
+
+  updategrievance(ticketid: string, resolution: string, payload: string): Observable<string> {
+    let param = "";
+    param = `ticketid=${ticketid}&resolution=${resolution}`;
+
+    let uri: string = "";
+    if(this.apiURL.length > 0) {
+      uri = this.apiURL + "/api/v1/grievance";
+    } else {
+      uri = "/api/v1/grievance";
+    }
+
+    const options = {
+      params: new HttpParams({fromString: param}),
+      headers: new HttpHeaders({
+               'Content-Type': 'application/json'
+       })
+     };
+    
+    return this.http.put<string>(uri, payload,options);
+  }
+
 }

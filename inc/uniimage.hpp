@@ -510,7 +510,7 @@ class noor::Service {
         std::string process_web_request(const std::string& req, auto& dbinst);
         std::string handleGetMethod(Http& http, auto& dbinst);
         std::string handlePostMethod(Http& http, auto& dbinst);
-        std::string handlePutMethod(Http& http);
+        std::string handlePutMethod(Http& http, auto& dbinst);
         std::string handleDeleteMethod(Http& http);
         std::string handleOptionsMethod(Http& http);
         

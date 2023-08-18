@@ -1701,7 +1701,21 @@ std::string noor::Service::handleGetMethod(Http& http, auto& dbinst) {
             }
             return(buildHttpResponseOK(http, response, "application/json"));
         }
-        
+
+        auto ticketid = http.value("ticketid");
+        if(ticketid.length()) {
+            auto qs = json::array();
+            //qs[0] = std::stoi(ticketid);
+            //auto qsobj = json::object();
+            //qsobj["$in"] = qs;
+            filter["tickets.ticketid"] = std::stoi(ticketid);
+            //filter["tickets.ticketid"] = qsobj;
+            std::cout << "line: " << __LINE__ << " filter: " << filter.dump() << std::endl;
+            //projection["tickets.ticketid"] = 1;
+            response = dbinst.get_documentEx(collectionname, filter.dump(), projection.dump());
+            std::cout << "line: " << __LINE__ << " response: " << response << std::endl; 
+            return(buildHttpResponseOK(http, response, "application/json"));
+        }
 
     } else if(!http.uri().compare(0, 11, "/api/v1/pta")) {
         auto projection = json::object();
@@ -1893,7 +1907,117 @@ std::string noor::Service::handlePostMethod(Http& http, auto& dbinst) {
     return(std::string());
 }
 
-std::string noor::Service::handlePutMethod(Http& http) {
+std::string noor::Service::handlePutMethod(Http& http, auto& dbinst) {
+    std::stringstream ss("");
+    
+    if(!http.uri().compare(0, 15, "/api/v1/account")) {
+        auto body = json::parse(http.body());
+        std::cout << "line: " << __LINE__ << " json payload: " << body.dump() << std::endl;
+        //Create a new document in account collection.
+        auto response = dbinst.create_documentEx("account", http.body());
+        std::cout << "line: " << __LINE__ << " response: " << response << std::endl;
+        auto jobj = json::object();
+        jobj["result"] = "success";
+        jobj["reason"] = "";
+        jobj["statuscode"] = 200;
+        jobj["ts"] = "";
+        jobj["ip"] = http.value("X-Forwarded-For");
+
+        if(!response.length()) {
+            jobj["result"] = "failure";
+            jobj["statuscode"] = 500;
+        }
+
+        return(buildHttpResponseOK(http, jobj.dump(), "application/json"));
+
+    } else if(!http.uri().compare(0, 17, "/api/v1/grievance")) {
+        //Create the Grievance 
+        auto body = json::parse(http.body());
+
+        auto collectionname = "grievance";
+        auto filter = json::object();
+        //QS value
+        std::uint32_t ticketid = 0;
+        std::string resolution = "";
+        bool response = false;
+
+        if(!http.value("ticketid").length()) {
+            //return failure response
+            auto jobj = json::object();
+            jobj["result"] = "failure";
+            jobj["reason"] = "";
+            jobj["statuscode"] = 500;
+            jobj["ts"] = "";
+            jobj["ip"] = http.value("X-Forwarded-For");
+            jobj["payload"] = std::string();
+            return(buildHttpResponseOK(http, jobj.dump(), "application/json"));
+        }
+
+        //auto querydocument = json::object();
+        ticketid = std::stoi(http.value("ticketid"));
+        resolution = http.value("resolution");
+
+        filter["tickets.ticketid"] = ticketid;
+        std::stringstream document;
+        document << "{\"$set\":" << "{\"tickets.resolutiondetails\": " << http.body() << "}}" ;
+        response = dbinst.update_collection(collectionname, filter.dump(), document.str());
+
+        auto jobj = json::object();
+        jobj["result"] = "success";
+        jobj["reason"] = "";
+        jobj["statuscode"] = 200;
+        jobj["ts"] = "";
+        jobj["ip"] = http.value("X-Forwarded-For");
+        jobj["payload"] = std::to_string(ticketid);
+
+        if(!response) {
+            jobj["result"] = "failure";
+            jobj["statuscode"] = 500;
+        }
+        return(buildHttpResponseOK(http, jobj.dump(), "application/json"));
+
+    } else if(!http.uri().compare(0, 11, "/api/v1/pta")) {
+        //Create PTA Account 
+        auto body = json::parse(http.body());
+        auto projection = json::object();
+        projection["_id"] = false;
+        auto collectionname = "pta";
+        auto filter = json::object();
+        //QS value
+        auto querydocument = json::object();
+
+        filter["academicyear"] = body["academicyear"];
+        auto response = dbinst.get_document(collectionname, filter.dump(), projection.dump());
+
+        if(!response.length()) {
+            response = dbinst.create_documentEx(collectionname, http.body());
+        } else {
+            //update the document.
+            std::stringstream document;
+            document << "{\"$push\": {\"ptas\": "  << body["ptas"][0] << "}}";
+            response = dbinst.update_collection(collectionname, filter.dump(), document.str());
+        }
+
+        std::cout << "line: " << __LINE__ << " response: " << response << std::endl;
+        auto jobj = json::object();
+        jobj["result"] = "success";
+        jobj["reason"] = "";
+        jobj["statuscode"] = 200;
+        jobj["ts"] = "";
+        jobj["ip"] = http.value("X-Forwarded-For");
+
+        if(!response.length()) {
+            jobj["result"] = "failure";
+            jobj["statuscode"] = 500;
+        }
+
+        return(buildHttpResponseOK(http, jobj.dump(), "application/json"));
+
+    } else if(!http.uri().compare(0, 14, "/api/v1/report")) {
+    } else {
+
+    }
+    return(std::string());
 }
 
 std::string noor::Service::handleDeleteMethod(Http& http) {
@@ -1908,7 +2032,7 @@ std::string noor::Service::process_web_request(const std::string& req, auto& dbi
     } else if(!http.method().compare("POST")) {
         return(handlePostMethod(http, dbinst));
     } else if(!http.method().compare("PUT")) {
-        return(handlePutMethod(http));
+        return(handlePutMethod(http, dbinst));
     } else if(!http.method().compare("OPTIONS")) {
         return(handleOptionsMethod(http));
     } else if(!http.method().compare("DELETE")) {

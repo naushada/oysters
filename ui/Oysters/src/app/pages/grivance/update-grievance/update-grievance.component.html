@@ -1,4 +1,4 @@
-<form clrForm clrLayout="vertical" [formGroup]="updategrievanceForm" (ngSubmit)="onSubmit()">
+<form clrForm clrLayout="vertical" [formGroup]="updategrievanceForm">
     <div class="clr-container">
         <!-- First ROW -->
         <div class="clr-row">
@@ -8,7 +8,7 @@
                     <label for="grievanceid">Grievance ID</label>
                     <input clrInput name="grievanceid" formControlName="grievanceid">
                 </clr-input-container>
-                <cds-button class="btn btn-primary">Retrieve Grievance Details</cds-button>
+                <cds-button class="btn btn-primary" (click)="OnRetrieveGrievanceDetails()">Retrieve Grievance Details</cds-button>
             </div>
             <div class="w-100"></div>
             <div class="clr-col-6 clr-col-lg">
@@ -23,16 +23,24 @@
             <div class="clr-col-6 clr-col-lg">
                 <clr-textarea-container>
                     <label for="resolutiondetails">Resolution Details</label>
-                    <textarea clrTextarea name="resolutiondetails" required rows="8" cols="30"></textarea>
+                    <textarea clrTextarea name="resolutiondetails" required rows="8" cols="30" formControlName="resolutiondetails"></textarea>
                 </clr-textarea-container>
             </div>
 
             <div class="clr-col-6 clr-col-lg">
                 <clr-input-container>
-                    <label for="createdon">Grievance Resolved On</label>
-                    <input clrInput type="date" name="createdon" formControlName="createdon">
+                    <label for="updatedon">Grievance Resolved On</label>
+                    <input clrInput type="date" name="updatedon" formControlName="updatedon">
                 </clr-input-container>
             </div>
+            <div class="clr-col-6 clr-col-lg">
+                <clr-input-container>
+                    <label for="updatedby">Grievance Updated By</label>
+                    <input clrInput type="text" name="updatedby" formControlName="updatedby">
+                </clr-input-container>
+            </div>
+
+            <!--
             <div class="clr-col-6 clr-col-lg">
 
             </div>
@@ -64,9 +72,61 @@
             <div class="clr-col-6 clr-col-lg">
                 
             </div>
+        -->
         </div>
+        
     </div>
     <div>
-        <cds-button class="btn btn-primary">Update Grievance</cds-button>
+        <cds-button class="btn btn-primary" (click)="onSubmit()">Update Grievance</cds-button>
     </div>
 </form>
+
+<clr-datagrid *ngIf="grievances != undefined">
+    <clr-dg-column>Grievance ID</clr-dg-column>
+    <clr-dg-column>Grievance Type</clr-dg-column>
+    <clr-dg-column>Grievance Description</clr-dg-column>
+    <clr-dg-column>Created On</clr-dg-column>
+    <clr-dg-column>Priority</clr-dg-column>
+    <clr-dg-column>Resolution</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let grievance of grievances.tickets" [clrDgItem]="grievance">
+        <clr-dg-cell>{{grievance.ticketid}}</clr-dg-cell>
+        <clr-dg-cell>{{grievance.grievancetype}}</clr-dg-cell>
+        <clr-dg-cell>{{grievance.grievancedescription}}</clr-dg-cell>
+        <clr-dg-cell>{{grievance.createdon}}</clr-dg-cell>
+        <clr-dg-cell>{{grievance.priority}}</clr-dg-cell>
+        <clr-dg-cell>{{grievance.resolution}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+		<clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "grievances.tickets.length">
+			<clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Grievance Per Page</clr-dg-page-size>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+        of {{pagination.totalItems}} Grievances
+        </clr-dg-pagination>
+    </clr-dg-footer>
+
+    <clr-dg-detail *clrIfDetail="let grievance">
+        <clr-dg-detail-header>Resolution</clr-dg-detail-header>
+        <clr-dg-detail-body>
+            <clr-datagrid>
+                <clr-dg-column>Reason</clr-dg-column>
+                <clr-dg-column>Updated By</clr-dg-column>
+                <clr-dg-column>Updated On</clr-dg-column>
+
+                <clr-dg-row *clrDgItems="let elm of grievance.resolutiondetails" [clrDgItem]="elm">
+                    <clr-dg-cell>{{elm.reason}}</clr-dg-cell>
+                    <clr-dg-cell>{{elm.updatedby}}</clr-dg-cell>
+                    <clr-dg-cell>{{elm.updatedon}}</clr-dg-cell>
+                </clr-dg-row>
+                <clr-dg-footer>
+                    <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems] = "grievance.resolutiondetails.length">
+                        <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Resolution per page</clr-dg-page-size>
+                            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Resolution
+                    </clr-dg-pagination>
+                </clr-dg-footer>
+            </clr-datagrid>
+        </clr-dg-detail-body>
+    </clr-dg-detail>
+
+</clr-datagrid>
